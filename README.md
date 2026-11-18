@@ -2,6 +2,10 @@
 
 An illustrated exploration game featuring painted 3D characters, psionic combat, and proximity music.
 
+Play: https://mcdowellj87.github.io/Siegress-beta/
+
+GitHub Pages deploys automatically when `main` is updated.
+
 ## Run locally
 
 Install Node.js 22.12 or newer, then run:

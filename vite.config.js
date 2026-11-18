@@ -71,6 +71,7 @@ export default defineConfig(async ({ command }) => {
   }
 
   return {
+    base: './',
     plugins,
     resolve: {
       alias: {
