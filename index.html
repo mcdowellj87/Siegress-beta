@@ -1,0 +1,3235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Siegress</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #c {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #hint {
+      position: fixed;
+      left: 12px;
+      top: 12px;
+      font: 12px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #c9c9d2;
+      background: rgba(0, 0, 0, .35);
+      padding: 8px 10px;
+      border-radius: 10px;
+      user-select: none;
+      pointer-events: none;
+      white-space: pre;
+    }
+
+    #playerSpeedometer {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      color: rgba(218, 255, 250, .88);
+      font: 11px/1 "Orbitron", system-ui, sans-serif;
+      text-align: right;
+      text-shadow: 0 0 8px rgba(35, 185, 197, .45);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #playerSpeedValue {
+      display: inline-block;
+      min-width: 4.5ch;
+      margin-left: 7px;
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+      transition: color 100ms linear, text-shadow 100ms linear;
+    }
+
+    #playerSpeedometer.is-penalized #playerSpeedValue {
+      color: #ff4d4d;
+      text-shadow: 0 0 9px rgba(255, 48, 48, .7);
+    }
+
+    #devConsole {
+      position: fixed;
+      left: 12px;
+      bottom: 12px;
+      width: min(520px, calc(100vw - 24px));
+      box-sizing: border-box;
+      max-height: calc(100dvh - 24px);
+      overflow: auto;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, .55);
+      backdrop-filter: blur(6px);
+      color: #d8d8e0;
+      font: 13px/1.3 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      border: 1px solid rgba(255, 255, 255, .10);
+      display: none;
+      /* hidden by default */
+      pointer-events: none;
+      /* so it never steals mouse */
+      user-select: none;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    #devConsole .row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    #devConsole .prompt {
+      flex-shrink: 0;
+      opacity: .7;
+    }
+
+    #devConsole .input {
+      flex: 1;
+      min-width: 0;
+      white-space: pre-wrap;
+    }
+
+    #devConsole .help {
+      margin-top: 6px;
+      opacity: .55;
+      font-size: 12px;
+    }
+
+    #psionicHud {
+      --psionic-level: 0%;
+      --psionic-threshold: 60%;
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 40;
+      width: min(300px, calc(100vw - 36px));
+      color: rgba(218, 255, 250, .88);
+      font: 11px/1 "Orbitron", system-ui, sans-serif;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #psionicHud .psionicMeta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 7px;
+    }
+
+    #psionicHud .psionicTrack {
+      position: relative;
+      height: 13px;
+      overflow: visible;
+      border: 1px solid rgba(117, 228, 219, .55);
+      background: rgba(0, 12, 18, .68);
+      box-shadow: 0 0 12px rgba(35, 185, 197, .14);
+    }
+
+    #psionicFill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #147f83, #36d4be 68%, #a8fff0);
+      box-shadow: 0 0 12px rgba(72, 255, 226, .35);
+      transition: width 120ms linear;
+    }
+
+    #psionicHud .psionicThreshold {
+      position: absolute;
+      left: var(--psionic-threshold);
+      top: -5px;
+      width: 2px;
+      height: 23px;
+      background: #eefec9;
+      box-shadow: 0 0 7px rgba(238, 254, 201, .8);
+    }
+
+    #psionicHud.is-critical .psionicTrack {
+      border-color: rgba(221, 255, 157, .9);
+      animation: psionicWarning 760ms ease-in-out infinite alternate;
+    }
+
+    #psionicHud.is-overloading {
+      color: #fff0f0;
+      animation: psionicOverload 500ms ease-in-out infinite alternate;
+    }
+    #psionicHud.is-overloading .psionicTrack {
+      border-color: #ff354b;
+      background: #4b0913;
+      animation: none;
+    }
+    #psionicHud.is-overloading #psionicFill {
+      background: linear-gradient(90deg, #c91530, #ff3048 68%, #ffb2b9);
+      box-shadow: 0 0 14px #ff304880;
+    }
+    #psionicHud.is-overloading .psionicThreshold { background: #ffe3e6; }
+    @keyframes psionicOverload {
+      from { background: rgba(90, 0, 13, .45); box-shadow: 0 0 4px #ed153844; color: #ff9ca8; }
+      to { background: rgba(205, 15, 43, .85); box-shadow: 0 0 24px #ff1835bb; color: #ffffff; }
+    }
+
+    #regulationView {
+      --hand-left: clamp(35px, 10vw, 130px);
+      position: fixed;
+      inset: 0;
+      z-index: 35;
+      display: none;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #psionicHud.is-regulating + #regulationView {
+      display: block;
+    }
+
+    #regulationHand,
+    #regulationMushroom {
+      position: absolute;
+      display: block;
+      height: auto;
+      max-width: none;
+      will-change: transform;
+    }
+
+    #regulationHand {
+      width: min(470px, 58vw);
+      left: var(--hand-left);
+      bottom: -22px;
+    }
+
+    #regulationMushroom {
+      width: min(270px, 34vw);
+      left: calc(var(--hand-left) + min(110px, 15vw));
+      bottom: min(250px, 28vh);
+      animation: mushroomHover 1.25s ease-in-out infinite alternate;
+    }
+
+    @keyframes mushroomHover {
+      from { transform: translateY(0); }
+      to { transform: translateY(-18px); }
+    }
+
+    @keyframes psionicWarning {
+      from { box-shadow: 0 0 10px rgba(141, 255, 197, .22); }
+      to { box-shadow: 0 0 19px rgba(205, 255, 133, .62); }
+    }
+
+    :root {
+      --mega-pink: #E60C9A;
+    }
+
+    #mfModal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: grid;
+      place-items: center;
+
+      /* 50% translucent overlay */
+      background: rgba(0, 0, 0, .5);
+
+      overflow: hidden;
+      user-select: none;
+    }
+
+    #mfModal .stage {
+      width: min(92vw, 900px);
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      perspective: 1200px;
+      position: relative;
+    }
+
+    #mfModal .space {
+      position: relative;
+      width: min(90vw, 760px);
+      aspect-ratio: 16 / 9;
+      transform-style: preserve-3d;
+    }
+
+    #mfModal .logoWrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    #mfModal .stack {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+
+    #mfModal .layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+
+      animation-name: microDrift;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      will-change: transform;
+    }
+
+    /* lock logo_1 only */
+    #mfModal .layer.noDrift {
+      animation: none !important;
+      transform: none !important;
+      will-change: auto;
+    }
+
+    #mfModal #mfTitleLogo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    @keyframes microDrift {
+      0% {
+        transform: translate3d(0px, 0px, 0);
+      }
+
+      50% {
+        transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0);
+      }
+
+      100% {
+        transform: translate3d(0px, 0px, 0);
+      }
+    }
+
+    #mfModal .carousel {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-style: preserve-3d;
+    }
+
+    #mfModal .carousel.ring1 {
+      top: 44%;
+    }
+
+    #mfModal .carousel.ring2 {
+      top: 56%;
+    }
+
+    #mfModal .item {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-style: preserve-3d;
+
+      font-family:
+        "Eurostile",
+        "Microgramma",
+        "Orbitron",
+        "Bank Gothic",
+        system-ui,
+        sans-serif;
+
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+
+      user-select: none;
+      pointer-events: none;
+      white-space: pre;
+
+      display: inline-block;
+    }
+
+    #mfModal .ring1 .item {
+      color: var(--mega-pink);
+      text-shadow:
+        0 0 2px rgba(230, 12, 154, .95),
+        0 0 6px rgba(230, 12, 154, .75),
+        0 0 12px rgba(230, 12, 154, .55),
+        0 0 24px rgba(230, 12, 154, .35),
+        0 0 48px rgba(230, 12, 154, .18);
+    }
+
+    #mfModal .ring1 .item::before {
+      content: attr(data-ch);
+      position: absolute;
+      inset: 0;
+      transform: scale(0.88);
+      transform-origin: center;
+      color: rgba(0, 0, 0, .92);
+      filter: blur(0.2px);
+      text-shadow: none;
+      pointer-events: none;
+    }
+
+    #mfModal .ring1 .item::after {
+      content: attr(data-ch);
+      position: absolute;
+      inset: 0;
+      transform: scale(0.93);
+      transform-origin: center;
+      color: rgba(0, 0, 0, .55);
+      filter: blur(0.6px);
+      text-shadow: none;
+      pointer-events: none;
+    }
+
+    #mfModal .ring2 .item {
+      color: #ffffff;
+      text-shadow:
+        0 0 2px rgba(255, 255, 255, .95),
+        0 0 6px rgba(255, 255, 255, .75),
+        0 0 12px rgba(255, 255, 255, .55),
+        0 0 24px rgba(255, 255, 255, .35),
+        0 0 48px rgba(255, 255, 255, .18);
+    }
+
+    #mfModal #loader {
+      position: absolute;
+      left: 50%;
+      top: calc(100% + 18px);
+      transform: translateX(-50%);
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, .9);
+      user-select: none;
+      pointer-events: auto;
+      text-shadow:
+        0 0 6px rgba(255, 255, 255, .18),
+        0 0 18px rgba(255, 255, 255, .10);
+    }
+
+    #mfModal #fictionBlurb {
+      position: absolute;
+      left: 50%;
+      bottom: 3vh;
+      transform: translateX(-50%);
+      max-width: min(90vw, 720px);
+
+      font-family: system-ui, sans-serif;
+      font-size: 11px;
+      line-height: 1.45;
+      text-align: center;
+      color: rgba(255, 255, 255, .45);
+
+      user-select: none;
+      pointer-events: none;
+    }
+
+    #mfDeath {
+      position: fixed;
+      inset: 0;
+      z-index: 200000;
+      display: none;
+      place-items: center;
+      background: rgba(0, 0, 0, .66);
+      backdrop-filter: blur(6px);
+      user-select: none;
+    }
+
+    #mfDeath .panel {
+      width: min(92vw, 860px);
+      padding: 18px 18px 16px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, .72);
+      border: 1px solid rgba(255, 255, 255, .10);
+      box-shadow: 0 12px 38px rgba(0, 0, 0, .55);
+    }
+
+    #mfDeath .title {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: .12em;
+      font-size: 14px;
+      color: rgba(255, 255, 255, .75);
+      margin-bottom: 10px;
+    }
+
+    #mfDeath .poem {
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, .70);
+      white-space: pre-wrap;
+    }
+
+    #mfDeath .hint {
+      margin-top: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      opacity: .7;
+      color: white;
+    }
+  </style>
+
+  <script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js"
+  }
+}
+</script>
+  <script src="./src/assets/preload.js"></script>
+</head>
+
+<body>
+  <!-- =========================
+     OPENING CUTSCENE TEMPLATE
+========================= -->
+  <template id="mfCutsceneTpl">
+    <div id="mfCutsceneModal" aria-hidden="false">
+      <div class="stage" id="cs-stage">
+        <div class="bgStack" id="cs-bgStack" aria-hidden="true">
+          <div class="bgFrame" id="cs-bg1"></div>
+          <div class="bgFrame" id="cs-bg2"></div>
+          <div class="bgFrame" id="cs-bg3"></div>
+          <div class="bgFrame" id="cs-bg4"></div>
+          <div class="bgFrame" id="cs-bg5"></div>
+        </div>
+
+        <div class="charLayer" id="cs-charLayer">
+          <div class="card" id="cs-amadeusCard" aria-hidden="true"></div>
+          <div class="card" id="cs-aristocratCard" aria-hidden="true"></div>
+        </div>
+
+        <div class="captionBar">
+          <div class="captionPanel">
+            <div id="cs-captionText"></div>
+          </div>
+        </div>
+
+        <!-- subtle prompt (shows during playback + end) -->
+        <div class="csPrompt" id="csPrompt"></div>
+      </div>
+    </div>
+  </template>
+
+  <style>
+    /* ===== Cutscene scoped styles ===== */
+    #mfCutsceneModal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #000;
+      user-select: none;
+      overflow: hidden;
+      z-index: 100000;
+      /* above everything */
+    }
+
+    #mfCutsceneModal .stage {
+      width: min(92vw, 1100px);
+      aspect-ratio: 16/9;
+      position: relative;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #mfCutsceneModal .bgStack {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 2800ms ease;
+      transform: scale(1);
+      transform-origin: center center;
+      will-change: transform, opacity;
+    }
+
+    #mfCutsceneModal .bgStack.isVisible {
+      opacity: 1;
+    }
+
+    #mfCutsceneModal .bgFrame {
+      position: absolute;
+      inset: 0;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      opacity: 0;
+      transition: opacity 900ms ease;
+      will-change: opacity;
+    }
+
+    #mfCutsceneModal .bgFrame.isOn {
+      opacity: 1;
+    }
+
+    #mfCutsceneModal .bgFrame.fadeOut {
+      opacity: 0 !important;
+    }
+
+    #mfCutsceneModal .charLayer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1400ms ease;
+    }
+
+    #mfCutsceneModal .charLayer.isVisible {
+      opacity: 1;
+    }
+
+    #mfCutsceneModal .captionBar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 28%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 18px 18px;
+      box-sizing: border-box;
+      background: linear-gradient(to top, rgba(0, 0, 0, .92), rgba(0, 0, 0, .10) 70%, rgba(0, 0, 0, 0));
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    #mfCutsceneModal .captionPanel {
+      width: min(92%, 900px);
+      min-height: 84px;
+      max-height: 160px;
+      padding: 14px 16px;
+      box-sizing: border-box;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, .82);
+      border: 1px solid rgba(255, 255, 255, .08);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #mfCutsceneModal #cs-captionText {
+      font-family: "Orbitron", system-ui, sans-serif;
+      font-weight: 500;
+      font-size: clamp(12px, 1.45vw, 16px);
+      line-height: 1.45;
+      letter-spacing: 0.02em;
+      text-align: center;
+      color: rgba(255, 255, 255, .72);
+      white-space: pre-wrap;
+      min-height: 1.5em;
+      width: 100%;
+      transition: opacity 260ms ease;
+    }
+
+    #mfCutsceneModal .card {
+      position: absolute;
+      top: 10%;
+      display: inline-block;
+      width: auto;
+      height: auto;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      will-change: transform;
+      transform-origin: center center;
+    }
+
+    #mfCutsceneModal #cs-amadeusCard {
+      z-index: 4;
+    }
+
+    #mfCutsceneModal #cs-aristocratCard {
+      z-index: 3;
+    }
+
+    #mfCutsceneModal .card img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: min(40vw, 520px);
+      max-height: min(58vh, 600px);
+      object-fit: contain;
+      background: transparent;
+    }
+
+    #mfCutsceneModal .csPrompt {
+      position: absolute;
+      left: 50%;
+      top: 14px;
+      transform: translateX(-50%);
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: rgba(255, 255, 255, .40);
+      user-select: none;
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+  <script src="./src/ui/cutscenes/megaFutureIntro.js"></script>
+  <img id="psiLightningHand" src="./assets/ui/psi-lightning-hand.png" alt="" hidden style="position:fixed;left:0;bottom:-2vh;width:min(100vw,1100px);pointer-events:none;z-index:35;transform-origin:25% 100%" />
+  <div id="monsterHealth" role="meter" aria-label="Monster hit points" aria-valuemin="0" aria-valuemax="2" style="display:none;position:fixed;transform:translate(-50%,-100%);z-index:60;background:#17121dcc;padding:10px 18px;border:1px solid #78657e;border-radius:6px;color:white;font:14px system-ui;pointer-events:none">MONSTER <span id="monsterHealthValue">2 / 2 HP</span><div style="height:6px;width:160px;background:#342735;margin-top:6px"><div id="monsterHealthFill" style="height:100%;width:100%;background:#d64768"></div></div></div>
+  <div id="psiCooldown" role="progressbar" aria-label="Psionic strike cooldown" aria-valuemin="0" aria-valuemax="100" style="display:none;position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:60;padding:10px 14px;background:#17121dcc;border:1px solid #77cce2;border-radius:6px;color:#77cce2;font:13px system-ui;pointer-events:none">STRIKE COOLDOWN <span id="psiCooldownTime"></span><div style="height:5px;width:180px;background:#25323e;margin-top:7px"><div id="psiCooldownFill" style="height:100%;background:#77cce2"></div></div></div>
+  <div id="hint">Click to lock • WASD move • Shift sprint • R regulate • F casting mode • Space cast (critical psi)</div>
+  <div id="controllerHint" hidden style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;color:#d9ffff;background:#17121dcc;padding:8px 12px;font:12px system-ui;pointer-events:none">Left stick: move · Right stick: look · L3: run · A: cast · X: casting · Y: regulate · B: exit · Start: start/restart</div>
+  <div id="playerSpeedometer" aria-label="Player speed" hidden>
+    PLAYER SPEED <span id="playerSpeedValue">0.0</span> m/s
+  </div>
+  <div id="psionicHud" role="meter" aria-label="Psionic criticality" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="psionicMeta"><span>PSIONIC CRITICALITY</span><span><span id="psionicValue">0</span>%</span></div>
+    <div class="psionicTrack">
+      <div id="psionicFill"></div>
+      <div class="psionicThreshold" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div id="regulationView" aria-hidden="true">
+    <img id="regulationHand" src="./assets/ui/hand.png?v=3" alt="" />
+    <img id="regulationMushroom" src="./assets/ui/mushroom.png?v=3" alt="" />
+  </div>
+  <div id="devConsole">
+    <div class="row">
+      <div class="prompt">&gt;</div>
+      <div class="input" id="devConsoleInput"></div>
+    </div>
+    <div class="help">Tab to close • Enter to run • noclip toggles fly mode • player toggles avatar visibility</div>
+  </div>
+  <div id="mfDeath" aria-hidden="true">
+    <div class="panel">
+      <div class="title">YOU HAVE DIED</div>
+      <div class="poem" id="mfDeathPoem"></div>
+      <div class="hint">Press <b>R</b> to respawn</div>
+    </div>
+  </div>
+  <div id="mfModal" aria-hidden="false">
+    <div class="stage">
+      <div class="space">
+          <div class="logoWrap">
+            <div class="stack">
+              <img id="mfTitleLogo" class="layer noDrift" src="./assets/ui/siegress_logo.png" alt="Siegress">
+            </div>
+
+          <div id="loader">Loading.</div>
+        </div>
+      </div>
+    </div>
+    <div id="fictionBlurb">
+      <div>This work is a work of fiction.</div>
+      <div>All characters and events portrayed in this game are fictional.</div>
+      <div>Any resemblance to real persons, living or dead, or actual events is purely coincidental.</div>
+    </div>
+  </div>
+  <script src="./src/ui/titleScreen.js"></script>
+  <canvas id="c"></canvas>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from './vendor/GLTFLoader.js';
+    import {
+      FOOTSTEP_INTERVAL_S,
+      WALK_STEP_SOUNDS,
+      ensureFootstepsReady,
+      isFootstepsReady,
+      playFootstep
+    } from './src/audio/footsteps.js';
+    import { createMonsterProximityMusic } from './src/audio/monsterProximityMusic.js';
+    import { setupDevConsole } from './src/dev/console.js';
+    import { createFollowCameraSystem } from './src/camera/followCamera.js';
+    import { createControllerInput } from './src/input/controller.js';
+    import { createMonsterSystem } from './src/actors/monster.js';
+    import { createMonsterModelVisual, MONSTER_SIZE_SCALE, MONSTER_HEIGHT } from './src/actors/monsterModel.js';
+    import { createPlayerAvatarSystem } from './src/actors/prism.js';
+    import { createWorldCelShading } from './src/world/celShading.js';
+    import { createPsiLightning } from './src/player/psiLightning.js';
+    import { createPsionicSystem } from './src/player/psionics.js';
+    import { smoothMushroomGround } from './src/world/mushroomGround.js';
+    import { createTrackedRobotSystem } from './src/actors/trackedRobot.js';
+    import { settleGroundContact } from './src/physics/groundContact.js';
+    import { createColliderSystem } from './src/physics/colliders.js';
+    import {
+      TOON_RAMP_SKY_WATER,
+      TOON_RAMP_TUNDRA,
+      characterSunUniforms,
+      makeCharacterToonPhongMaterial
+    } from './src/render/materials.js';
+    import { createOldRootSiteSystem } from './src/world/oldRootSite.js';
+    import { createMushroomStoreSystem } from './src/world/mound.js';
+    import { calculateSeawallHeight, createSeawallSystem } from './src/world/seawall.js';
+    import { createSkyAnomalySystem } from './src/world/skyAnomalies.js';
+    import { createSpireSystem } from './src/world/spire.js';
+    import { createWaterMonsterSystem } from './src/world/waterMonster.js';
+    import { createGravelSystem } from './src/world/gravel.js';
+    import {
+      buildTerrainMesh as buildTerrainMeshObject,
+      deriveTerrainData,
+      disposeTerrainMesh,
+      restoreTerrainUnderMarker
+    } from './src/world/terrain.js';
+    import { createTreeSystem, FIR_TRUNK_COLLIDER_BUFFER } from './src/world/trees.js';
+    import { createWaterSystem } from './src/world/water.js';
+
+    /*
+      MODULARIZATION ROADMAP
+
+      Completed extractions:
+      - src/audio/footsteps.js owns footstep asset URLs, decode state, readiness, and playback.
+      - src/assets/preload.js owns window.__mfMemAssets prewarming and memory cache.
+      - src/dev/console.js owns hidden console input, buffering, and command dispatch.
+      - src/ui/titleScreen.js owns title modal animation, readiness, and start input.
+      - src/ui/cutscenes/megaFutureIntro.js owns the legacy MegaFuture intro cutscene.
+      - src/render/materials.js owns toon ramps, character shading, and shader tweaks.
+      - src/world/seawall.js owns red-barrier sampling, seawall mesh, and wall colliders.
+      - src/world/oldRootSite.js owns old-root-site image layout and reserve checks.
+      - src/world/terrain.js owns height derivation and terrain mesh construction.
+      - src/world/water.js owns sea plane and shoreline mist.
+      - src/world/skyAnomalies.js owns distant high-strangeness sky events.
+      - src/world/spire.js owns the cyan-marker spire and its pulsing beacon.
+      - src/world/waterMonster.js owns the pond's billboarded water monster.
+      - src/world/trees.js owns tree extraction, Douglas fir instancing, and tree colliders.
+      - src/physics/colliders.js owns spatial hash, capsule collisions, and character separation.
+      - src/camera/followCamera.js owns first-person/third-person camera behavior and pointer lock.
+      - src/actors/monster.js owns Muffin Man loading, wandering, animation, and player separation.
+      - src/actors/player.js owns player avatar loading, fallback prism, visibility, and animation.
+      - src/player/psionics.js owns criticality, regulation timing, slowdown, and psionic HUD state.
+
+      Future low-risk extractions:
+
+      Future gameplay extractions:
+      - src/actors/player.js for movement, jump/gravity, and death hazards.
+
+      Future world/engine extractions:
+
+      Refactor rule:
+      - Move one system at a time, pass shared state through a game/world context, and verify local load after each move.
+    */
+
+    const IS_FIREFOX = /firefox/i.test(navigator.userAgent);
+    const WORLD_DETAIL = IS_FIREFOX
+      ? { pixelRatio: 0.75, antialias: false, sampleStep: 12, smoothPasses: 1, slopePasses: 2, maxTrees: 900, targetFps: 30 }
+      : { pixelRatio: Math.min(devicePixelRatio, 1.5), antialias: true, sampleStep: 4, smoothPasses: 2, slopePasses: 4, maxTrees: 12000, targetFps: 60 };
+
+    /* =========================
+       FILES
+    ========================= */
+    const MAP_URL = './images/map.png';
+    let OBSCURE_PLAYER_MODEL = false;
+
+    let footTimer = 0;
+    window.ensureFootstepsReady = ensureFootstepsReady;
+
+    //Controls the gradients of green for all hills.
+    const brightestHillColor = '#2ED07B';
+
+    /* =========================
+       WORLD TUNING
+    ========================= */
+    const CELL_M = 1.0;
+    const BASE_MAX_HEIGHT = 140.0;
+    const HEIGHT_MULTIPLIER = 2.0; // all terrain elevations are globally doubled
+    const HEIGHT_CURVE_POW = 1.35; // lighter greens accelerate upward height gain
+    const HEIGHT_LIGHT_TAPER = 0.25; // soft-rolls off the brightest greens
+
+    const PLAYER_SCALE = 25.0; // was 2.0 — player model is 10x smaller
+    const BASE_EYE_HEIGHT = 1.7;
+    const PLAYER_EYE_HEIGHT = BASE_EYE_HEIGHT * PLAYER_SCALE;
+
+    const SPEED_WALK = 3.0;
+    const SPEED_SPRINT = SPEED_WALK * 3.0;
+    const NOCLIP_SPEED = 42.0;
+    const NOCLIP_SPRINT_SPEED = 130.0;
+
+    /* Sun arc */
+    let SUN_ARC_DURATION_S = 2000.0; // realistic default (full 360)
+    const SUN_ARC_DURATION_FAST_S = 60.0;
+    const SUN_ARC_DURATION_REAL_S = 2000.0;
+
+    /* Air control */
+    const AIR_MAX_SPEED_WALK = SPEED_WALK;
+    const AIR_MAX_SPEED_SPRINT = SPEED_SPRINT;
+    const AIR_ACCEL = 26.0;
+    const AIR_FRICTION = 0.0;
+
+    /* Terrain mesh density */
+    const SAMPLE_STEP = WORLD_DETAIL.sampleStep;
+    const SMOOTH_PASSES = WORLD_DETAIL.smoothPasses;
+    const TOL = 24;
+
+    /* =========================
+       HEIGHTFIELD SHAPE CONTROL (NO NEW GEOMETRY)
+    ========================= */
+    const TOP_FLAT_GN_THRESHOLD = 0.92; // tweak 0.88..0.96
+    const TOP_FLATTEN_STRENGTH = 0.0;   // 0 = rounded peaks, 1 = hard mesa flattening
+    const SLOPE_PASSES = WORLD_DETAIL.slopePasses; // lower in Firefox to reduce startup work
+
+    /* =========================
+       PHYSICS
+    ========================= */
+    const GRAVITY = 28.0;
+
+
+    const PLAYER_RADIUS = 0.38 * PLAYER_SCALE;
+    const PLAYER_CAPSULE_H = 1.45 * PLAYER_SCALE;
+    const SEAWALL_HEIGHT = calculateSeawallHeight(PLAYER_CAPSULE_H, PLAYER_RADIUS);
+    const MUSHROOM_STORE_HEIGHT = SEAWALL_HEIGHT * 0.5125;
+    const FATAL_FALL_DISTANCE = BASE_EYE_HEIGHT * 6.0;
+    const PLAYER_CHARACTER_RADIUS_DEFAULT = 0.55;
+    const MONSTER_CHARACTER_RADIUS_DEFAULT = 0.85 * MONSTER_SIZE_SCALE;
+    const CHARACTER_COLLIDER_BUFFER = 0.06;
+
+    const SUBSTEP_DIST = 0.35 * PLAYER_SCALE;
+
+    const DEFAULT_MAX_TRAVERSABLE_SLOPE_DEG = 45;
+    const PLAYER_MAX_TRAVERSABLE_SLOPE_DEG = DEFAULT_MAX_TRAVERSABLE_SLOPE_DEG;
+    const MONSTER_MAX_TRAVERSABLE_SLOPE_DEG = DEFAULT_MAX_TRAVERSABLE_SLOPE_DEG;
+    const PLAYER_MAX_TRAVERSABLE_SLOPE = Math.tan(THREE.MathUtils.degToRad(PLAYER_MAX_TRAVERSABLE_SLOPE_DEG));
+    const MONSTER_MAX_TRAVERSABLE_SLOPE = Math.tan(THREE.MathUtils.degToRad(MONSTER_MAX_TRAVERSABLE_SLOPE_DEG));
+    const PLAYER_STEEP_SLOPE_SPEED_MULTIPLIER = 0.25;
+    const MONSTER_STEEP_SLOPE_SPEED_MULTIPLIER = 0.25;
+    const TRAVERSABLE_SLOPE_EPSILON = 1e-6;
+    const TERRAIN_SLOPE_SAMPLE_DIST = CELL_M;
+
+    /* =========================
+       SLOPE SPEED (GROUND ONLY)
+    ========================= */
+    const SLOPE_SAMPLE_DIST = 1.2 * PLAYER_SCALE;
+    const SLOPE_STRENGTH_UP = 0.90;
+    const SLOPE_STRENGTH_DN = 0.60;
+    const SLOPE_MAX_UP_PENALTY = 0.55;
+    const SLOPE_MAX_DN_BOOST = 1.30;
+
+    /* =========================
+       SEA
+    ========================= */
+    let SEA_LEVEL = 0.0;
+    const WATER_LEVEL_CLEARANCE = 20.0;
+    const FLOOR_Y = -99999;
+
+    /* Sky/water size sync */
+    const SKY_RADIUS = 25000;
+    const WATER_PLANE_SIZE = SKY_RADIUS * 2.0;
+
+    /* =========================
+       COLORS (from your PNG)
+    ========================= */
+    const COLORS = {
+      TREE: rgb('#8b5a2b'),
+      PLAYER: rgb('#0000ff'),
+      BORDER: rgb('#ffff00'),
+      FUSION_REACTOR_SPAWN: rgb('#FF0000'),
+      WATER_MONSTER_SPAWN: rgb('#ff00ff'),
+      OLD_ROOT_SPAWN: rgb('#00fffd'),
+      MUSHROOM_STORE: rgb('#ff3a8a')
+    };
+
+    function rgb(hex) {
+      const s = hex.replace('#', '');
+      return [parseInt(s.slice(0, 2), 16), parseInt(s.slice(2, 4), 16), parseInt(s.slice(4, 6), 16)];
+    }
+    function near(a, b) {
+      return Math.abs(a[0] - b[0]) <= TOL && Math.abs(a[1] - b[1]) <= TOL && Math.abs(a[2] - b[2]) <= TOL;
+    }
+    function isGreenish(r, g, b) {
+      return (g > r + 20) && (g > b + 20);
+    }
+
+    /* Robust "yellow = water" detection */
+    function isBorder(r, g, b) {
+      return near([r, g, b], COLORS.BORDER) || (r >= 230 && g >= 230 && b <= 120);
+    }
+    function isSpecial(r, g, b) {
+      return near([r, g, b], COLORS.TREE) ||
+        near([r, g, b], COLORS.PLAYER) ||
+        near([r, g, b], COLORS.FUSION_REACTOR_SPAWN) ||
+        near([r, g, b], COLORS.WATER_MONSTER_SPAWN) ||
+        isMushroomStorePixel(r, g, b, 255) ||
+        isOldRootSpawnPixel(r, g, b, 255);
+    }
+    function isTreePixel(r, g, b, a) {
+      if (a < 16) return false;
+      return near([r, g, b], COLORS.TREE);
+    }
+    function isMushroomStorePixel(r, g, b, a) {
+      if (a < 16) return false;
+      return r === COLORS.MUSHROOM_STORE[0] &&
+        g === COLORS.MUSHROOM_STORE[1] &&
+        b === COLORS.MUSHROOM_STORE[2];
+    }
+    function isPlayerSpawnPixel(r, g, b, a) {
+      if (a < 16) return false;
+      return near([r, g, b], COLORS.PLAYER);
+    }
+    function isHousePixel(r, g, b, a) {
+      return false;
+    }
+    function isFusionReactorSpawnPixel(r, g, b, a) {
+      if (a < 16) return false;
+      return r === COLORS.FUSION_REACTOR_SPAWN[0] &&
+        g === COLORS.FUSION_REACTOR_SPAWN[1] &&
+        b === COLORS.FUSION_REACTOR_SPAWN[2];
+    }
+    function isOldRootSpawnPixel(r, g, b, a) {
+      if (a < 16) return false;
+      return r <= 120 && g >= 140 && b >= 140 && g >= r + 45 && b >= r + 45;
+    }
+
+    /* =========================
+       RENDERER / SCENE
+    ========================= */
+    const canvas = document.getElementById('c');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: WORLD_DETAIL.antialias, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(WORLD_DETAIL.pixelRatio);
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    const worldCelShading = createWorldCelShading(renderer);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#3a2141');
+    scene.fog = new THREE.Fog(0x2a0809, 8000, 30000);
+
+    const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 60000);
+
+    addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    const cameraSystem = createFollowCameraSystem({
+      canvas,
+      camera,
+      playerScale: PLAYER_SCALE,
+      playerEyeHeight: PLAYER_EYE_HEIGHT,
+      heightAtWorld
+    });
+
+    // called by the title-screen script when the world is fully loaded
+    window.__mfEnablePointerLock = () => {
+      cameraSystem.enablePointerLock();
+    };
+
+    /* =========================
+       LIGHTS
+    ========================= */
+    scene.add(new THREE.AmbientLight(0xffffff, 0.08));
+
+    const MOON_LIGHT_COLOR = 0xbfd6ff;
+    const SUN_LIGHT_INTENSITY = 3.1;
+    const MOON_LIGHT_INTENSITY = 0.28;
+
+    const sun  = new THREE.DirectionalLight(new THREE.Color(MOON_LIGHT_COLOR), MOON_LIGHT_INTENSITY);
+    sun.position.set(-1600, 650, 520);
+    sun.target.position.set(0, 0, 0);
+    scene.add(sun);
+    scene.add(sun.target);
+
+    const fill = new THREE.DirectionalLight(new THREE.Color(MOON_LIGHT_COLOR), MOON_LIGHT_INTENSITY);
+    fill.position.set(900, 1200, -600);
+    fill.target.position.set(0, 0, 0);
+    scene.add(fill);
+    scene.add(fill.target);
+
+    // Sun arc: full 360° starting at east horizon (x+), progressing west
+    const SUN_ARC_RADIUS = 2200.0;
+    const SUN_ARC_HEIGHT = 700.0;
+    const SUN_ARC_Z = 200.0;
+    const MOON_X = -1600.0;
+    const MOON_Y = 650.0;
+    const MOON_Z = 520.0;
+    let sunArcT = 0.0;
+
+    /* Level root */
+    const levelRoot = new THREE.Group();
+    scene.add(levelRoot);
+
+    /* =========================
+       SKY DOME
+    ========================= */
+    let skyTex = null;
+    let skyCtx = null;
+    function paintSkyGradient(dayT) {
+      if (!skyCtx) return;
+      const grad = skyCtx.createLinearGradient(0, 0, 0, 256);
+      const t = THREE.MathUtils.clamp(dayT, 0, 1);
+      const lerpHex = (a, b, t) => {
+        const ar = (a >> 16) & 255, ag = (a >> 8) & 255, ab = a & 255;
+        const br = (b >> 16) & 255, bg = (b >> 8) & 255, bb = b & 255;
+        const r = Math.round(ar + (br - ar) * t);
+        const g = Math.round(ag + (bg - ag) * t);
+        const bl = Math.round(ab + (bb - ab) * t);
+        return `rgb(${r}, ${g}, ${bl})`;
+      };
+
+      const NIGHT = [0x1a0f1c, 0x1a0f1c, 0x1a0f1c, 0x1a0f1c, 0x1a0f1c];
+      const DAY = [0x0b2a3a, 0x1f6fa1, 0x3ad7ff, 0x7fe9ff, 0xffffff];
+
+      grad.addColorStop(0.00, lerpHex(NIGHT[0], DAY[0], t));
+      grad.addColorStop(0.40, lerpHex(NIGHT[1], DAY[1], t));
+      grad.addColorStop(0.70, lerpHex(NIGHT[2], DAY[2], t));
+      grad.addColorStop(0.90, lerpHex(NIGHT[3], DAY[3], t));
+      grad.addColorStop(1.00, lerpHex(NIGHT[4], DAY[4], t));
+      skyCtx.fillStyle = grad;
+      skyCtx.fillRect(0, 0, 32, 256);
+      if (skyTex) skyTex.needsUpdate = true;
+    }
+
+    function makeSkyDome() {
+      const skyCanvas = document.createElement('canvas');
+      skyCanvas.width = 32;
+      skyCanvas.height = 256;
+      skyCtx = skyCanvas.getContext('2d');
+
+      paintSkyGradient(0);
+
+      skyTex = new THREE.CanvasTexture(skyCanvas);
+      skyTex.colorSpace = THREE.SRGBColorSpace;
+
+      const geo = new THREE.SphereGeometry(SKY_RADIUS, 32, 16);
+      const mat = new THREE.MeshBasicMaterial({
+        map: skyTex,
+        side: THREE.BackSide,
+        depthWrite: false,
+        fog: false
+      });
+      scene.add(new THREE.Mesh(geo, mat));
+    }
+    makeSkyDome();
+
+    /* Sun disc + glow must match the directional light position (same direction, scaled) */
+    let horizonSunMesh = null;
+    let horizonSunGlow = null;
+    function makeSunDiscTexture() {
+      const size = 128;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      const cx = size * 0.5;
+      const cy = size * 0.5;
+      const r = size * 0.5;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      g.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
+      g.addColorStop(0.6, 'rgba(226, 235, 255, 1.0)');
+      g.addColorStop(0.9, 'rgba(178, 204, 255, 0.86)');
+      g.addColorStop(1.0, 'rgba(178, 204, 255, 0.0)');
+
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.needsUpdate = true;
+      return tex;
+    }
+    function makeSunGlowTexture() {
+      const size = 256;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      const cx = size * 0.5;
+      const cy = size * 0.5;
+      const r = size * 0.5;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      g.addColorStop(0.0, 'rgba(232, 240, 255, 0.72)');
+      g.addColorStop(0.3, 'rgba(180, 204, 255, 0.38)');
+      g.addColorStop(0.6, 'rgba(112, 132, 214, 0.18)');
+      g.addColorStop(1.0, 'rgba(112, 132, 214, 0.0)');
+
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.needsUpdate = true;
+      return tex;
+    }
+    function makeHorizonSun() {
+      const SUN_RADIUS = 1000;
+      const SUN_DIST = 14000;
+      const SUN_GLOW_SCALE = 3.0;
+      const SUN_DIAMETER = SUN_RADIUS * 2;
+
+      const discTex = makeSunDiscTexture();
+      const discMat = new THREE.SpriteMaterial({
+        map: discTex,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        blending: THREE.AdditiveBlending
+      });
+      horizonSunMesh = new THREE.Sprite(discMat);
+      horizonSunMesh.scale.set(SUN_DIAMETER, SUN_DIAMETER, 1);
+      scene.add(horizonSunMesh);
+
+      const glowTex = makeSunGlowTexture();
+      const glowMat = new THREE.SpriteMaterial({
+        map: glowTex,
+        transparent: true,
+        depthWrite: false,
+        fog: false,
+        blending: THREE.AdditiveBlending
+      });
+      horizonSunGlow = new THREE.Sprite(glowMat);
+      horizonSunGlow.scale.set(SUN_RADIUS * SUN_GLOW_SCALE, SUN_RADIUS * SUN_GLOW_SCALE, 1);
+      scene.add(horizonSunGlow);
+
+      updateHorizonSunPosition(SUN_DIST);
+    }
+    function updateHorizonSunPosition(dist) {
+      if (!horizonSunMesh) return;
+
+      const dir = sun.position.clone().normalize();
+      const pos = dir.multiplyScalar(dist);
+      horizonSunMesh.position.copy(pos);
+      if (horizonSunGlow) horizonSunGlow.position.copy(pos);
+    }
+    makeHorizonSun();
+
+    function makeStarSpriteTexture() {
+      const size = 32;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const cx = size * 0.5;
+      const cy = size * 0.5;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, size * 0.5);
+      g.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
+      g.addColorStop(0.16, 'rgba(255, 255, 255, 1.0)');
+      g.addColorStop(0.36, 'rgba(255, 255, 255, 0.42)');
+      g.addColorStop(1.0, 'rgba(255, 255, 255, 0.0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, size, size);
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    function makeSkyStars() {
+      const rand = seededCloudNoise(13371337);
+      const starCount = 4200;
+      const starRadius = SKY_RADIUS * 0.94;
+      const positions = new Float32Array(starCount * 3);
+      const colors = new Float32Array(starCount * 3);
+      const sizes = new Float32Array(starCount);
+      const alphas = new Float32Array(starCount);
+
+      for (let i = 0; i < starCount; i++) {
+        const theta = rand() * Math.PI * 2;
+        const yNorm = THREE.MathUtils.lerp(-0.04, 0.96, Math.pow(rand(), 0.62));
+        const ringRadius = Math.sqrt(Math.max(0, 1 - yNorm * yNorm));
+        positions[i * 3] = Math.cos(theta) * ringRadius * starRadius;
+        positions[i * 3 + 1] = yNorm * starRadius;
+        positions[i * 3 + 2] = Math.sin(theta) * ringRadius * starRadius;
+
+        const intensity = Math.pow(rand(), 1.8);
+        const alpha = THREE.MathUtils.lerp(0.22, 1.0, intensity);
+        const warmth = rand();
+        colors[i * 3] = THREE.MathUtils.lerp(0.78, 1.0, warmth);
+        colors[i * 3 + 1] = THREE.MathUtils.lerp(0.84, 1.0, intensity);
+        colors[i * 3 + 2] = 1.0;
+        alphas[i] = alpha;
+        sizes[i] = THREE.MathUtils.lerp(5.0, 22.0, Math.pow(rand(), 3.6));
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('starColor', new THREE.BufferAttribute(colors, 3));
+      geo.setAttribute('starSize', new THREE.BufferAttribute(sizes, 1));
+      geo.setAttribute('starAlpha', new THREE.BufferAttribute(alphas, 1));
+
+      const mat = new THREE.ShaderMaterial({
+        uniforms: { uStarTexture: { value: makeStarSpriteTexture() } },
+        vertexShader: `
+          attribute vec3 starColor;
+          attribute float starSize;
+          attribute float starAlpha;
+          varying vec3 vStarColor;
+          varying float vStarAlpha;
+          void main() {
+            vStarColor = starColor;
+            vStarAlpha = starAlpha;
+            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * mvPosition;
+            gl_PointSize = starSize;
+          }
+        `,
+        fragmentShader: `
+          uniform sampler2D uStarTexture;
+          varying vec3 vStarColor;
+          varying float vStarAlpha;
+          void main() {
+            vec4 tex = texture2D(uStarTexture, gl_PointCoord);
+            gl_FragColor = vec4(vStarColor, tex.a * vStarAlpha);
+          }
+        `,
+        transparent: true,
+        depthTest: true,
+        depthWrite: false,
+        fog: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      const stars = new THREE.Points(geo, mat);
+      stars.renderOrder = 0;
+      scene.add(stars);
+    }
+    makeSkyStars();
+
+    function seededCloudNoise(seed) {
+      let t = seed >>> 0;
+      return function rand() {
+        t += 0x6D2B79F5;
+        let x = Math.imul(t ^ (t >>> 15), 1 | t);
+        x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
+        return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function makeWispyCloudRingGeometry(y, radius, thickness, opacity, seed, foregroundOnly = false) {
+      const rand = seededCloudNoise(seed);
+      const positions = [];
+      const colors = [];
+      const indices = [];
+      let vi = 0;
+      const strandCount = foregroundOnly ? 6 : 22;
+      const crossSegments = 4;
+
+      for (let strand = 0; strand < strandCount; strand++) {
+        const isForegroundWisp = foregroundOnly;
+        const startAngle = rand() * Math.PI * 2;
+        const arcLength = THREE.MathUtils.lerp(
+          isForegroundWisp ? 0.18 : 0.12,
+          isForegroundWisp ? 0.68 : 0.54,
+          Math.pow(rand(), 1.45)
+        );
+        const steps = Math.max(8, Math.ceil(arcLength * 58));
+        const bendPhase = rand() * Math.PI * 2;
+        const shear = THREE.MathUtils.lerp(-0.18, 0.18, rand());
+        const yBase = y + THREE.MathUtils.lerp(-0.42, 0.42, rand()) * thickness;
+        const rBase = radius + THREE.MathUtils.lerp(isForegroundWisp ? -0.34 : -0.18, 0.18, rand()) * thickness;
+        const maxWidth = thickness * THREE.MathUtils.lerp(
+          isForegroundWisp ? 0.14 : 0.035,
+          isForegroundWisp ? 0.28 : 0.105,
+          rand()
+        );
+        const strandAlpha = opacity * THREE.MathUtils.lerp(
+          isForegroundWisp ? 1.85 : 0.42,
+          isForegroundWisp ? 3.15 : 1.15,
+          rand()
+        );
+        const taperPower = THREE.MathUtils.lerp(
+          isForegroundWisp ? 1.25 : 1.9,
+          isForegroundWisp ? 2.7 : 4.2,
+          rand()
+        );
+        const strandStart = vi;
+
+        for (let s = 0; s <= steps; s++) {
+          const u = s / steps;
+          const taper = Math.pow(Math.sin(u * Math.PI), taperPower);
+          const angle =
+            startAngle +
+            arcLength * u +
+            Math.sin(u * Math.PI * 2 + bendPhase) * 0.012 +
+            shear * (u - 0.5) * 0.045;
+          const strandNoise =
+            Math.sin(u * Math.PI * 6 + bendPhase) * 0.5 +
+            Math.sin(u * Math.PI * 17 + bendPhase * 1.7) * 0.24;
+          const width = maxWidth * taper * THREE.MathUtils.clamp(0.86 + strandNoise * 0.18, 0.35, 1.25);
+          const centerY = yBase + strandNoise * thickness * 0.018;
+          const centerR = rBase + Math.sin(u * Math.PI * 4 + bendPhase) * thickness * 0.025;
+
+          for (let c = 0; c <= crossSegments; c++) {
+            const v = c / crossSegments;
+            const across = (v - 0.5) * 2.0;
+            const edgeFade = Math.pow(Math.max(0, 1.0 - Math.abs(across)), 0.72);
+            const yy = centerY + across * width;
+            const rr = centerR + across * width * 0.12;
+            const alpha = strandAlpha * taper * edgeFade;
+
+            positions.push(Math.cos(angle) * rr, yy, Math.sin(angle) * rr);
+            colors.push(
+              isForegroundWisp ? 0.94 : 0.82,
+              isForegroundWisp ? 0.93 : 0.80,
+              isForegroundWisp ? 1.0 : 0.92,
+              alpha
+            );
+            vi++;
+          }
+        }
+
+        const row = crossSegments + 1;
+        for (let s = 0; s < steps; s++) {
+          for (let c = 0; c < crossSegments; c++) {
+            const a = strandStart + s * row + c;
+            const b = a + 1;
+            const d = strandStart + (s + 1) * row + c;
+            const e = d + 1;
+            indices.push(a, d, b, b, d, e);
+          }
+        }
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 4));
+      geo.setIndex(indices);
+      geo.computeVertexNormals();
+      return geo;
+    }
+
+    const skyCloudRings = [];
+
+    function makeSkyCloudRings() {
+      const moonDir = new THREE.Vector3(MOON_X, MOON_Y, MOON_Z).normalize();
+      const cloudDist = 13800;
+      const moonY = moonDir.y * cloudDist;
+      const baseRadius = Math.sqrt(Math.max(1, cloudDist * cloudDist - moonY * moonY));
+      const rings = [
+        { y: moonY - 1560, r: baseRadius + 180, t: 850, o: 0.08, seed: 9031, speed: 0.0086, nearSpeedMul: 1.8 },
+        { y: moonY - 820, r: baseRadius + 70, t: 650, o: 0.11, seed: 9032, speed: -0.0060, nearSpeedMul: 1.55 },
+        { y: moonY, r: baseRadius, t: 750, o: 0.16, seed: 9033, speed: 0.0048, nearSpeedMul: 1.35 },
+        { y: moonY + 755, r: baseRadius - 110, t: 600, o: 0.10, seed: 9034, speed: -0.0082, nearSpeedMul: 1.7 },
+        { y: moonY + 1530, r: baseRadius - 260, t: 950, o: 0.07, seed: 9035, speed: 0.0054, nearSpeedMul: 2.0 }
+      ];
+
+      for (const ring of rings) {
+        const material = new THREE.MeshBasicMaterial({
+            transparent: true,
+            opacity: 1.0,
+            vertexColors: true,
+            side: THREE.DoubleSide,
+            depthTest: true,
+            depthWrite: false,
+            fog: false
+          });
+        const farMesh = new THREE.Mesh(
+          makeWispyCloudRingGeometry(ring.y, ring.r, ring.t, ring.o, ring.seed, false),
+          material
+        );
+        farMesh.renderOrder = 0;
+        farMesh.rotation.y = (ring.seed % 360) * (Math.PI / 180);
+        farMesh.userData.cloudDriftSpeed = ring.speed;
+        skyCloudRings.push(farMesh);
+        scene.add(farMesh);
+
+        const nearMesh = new THREE.Mesh(
+          makeWispyCloudRingGeometry(ring.y, ring.r - ring.t * 0.28, ring.t, ring.o, ring.seed + 5000, true),
+          material.clone()
+        );
+        nearMesh.renderOrder = 0;
+        nearMesh.rotation.y = ((ring.seed + 137) % 360) * (Math.PI / 180);
+        nearMesh.userData.cloudDriftSpeed = ring.speed * ring.nearSpeedMul;
+        skyCloudRings.push(nearMesh);
+        scene.add(nearMesh);
+      }
+    }
+    makeSkyCloudRings();
+
+    function updateSkyCloudRings(dt) {
+      for (const ring of skyCloudRings) {
+        ring.rotation.y += ring.userData.cloudDriftSpeed * dt;
+      }
+    }
+
+    const skyAnomalySystem = createSkyAnomalySystem({
+      scene,
+      skyRadius: SKY_RADIUS
+    });
+
+    /* =========================
+       INPUT
+    ========================= */
+    const keys = new Set();
+    const controller = createControllerInput({ onAction(action) {
+      if (!cameraSystem.isReady) {
+        if (window.__mfWorldReady) window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Enter', key: 'Enter', bubbles: true }));
+        return;
+      }
+      if (deathActive) { if (action === 'start' || action === 'cast') respawn(); return; }
+      if (action === 'exit') {
+        if (psiLightning.isAiming) psiLightning.cancel();
+        else if (psionicSystem.isRegulating) psionicSystem.cancelRegulation();
+        return;
+      }
+      const code = { cast: 'Space', casting: 'KeyF', regulate: 'KeyR' }[action];
+      if (code) {
+        window.dispatchEvent(new KeyboardEvent('keydown', { code, key: code === 'Space' ? ' ' : code.slice(3).toLowerCase(), bubbles: true, cancelable: true }));
+        window.dispatchEvent(new KeyboardEvent('keyup', { code, bubbles: true }));
+      }
+    }});
+    const gameplayActive = () => document.hasFocus() && (cameraSystem.isLocked || (controller.state.connected && cameraSystem.isReady));
+    window.__mfControllerConnected = () => controller.state.connected;
+    const inputHas = code => controller.state.connected
+      ? (code === 'ShiftLeft' && controller.state.running)
+      : keys.has(code);
+    let requestPlayerWalkCycle = () => {};
+    addEventListener('keydown', e => {
+      if (!e.repeat && !keys.has(e.code) && ['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) requestPlayerWalkCycle();
+      keys.add(e.code);
+
+
+    });
+    addEventListener('keyup', e => keys.delete(e.code));
+    addEventListener('blur', () => keys.clear());
+
+    window.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    }, { capture: true });
+
+    /* =========================
+       HIDDEN DEV CONSOLE (Tab)
+    ========================= */
+    setupDevConsole({
+      consoleEl: document.getElementById('devConsole'),
+      inputEl: document.getElementById('devConsoleInput'),
+      commands: {
+        superflea: () => {
+          // Ensure avatar exists even if ./assets/ is missing
+          playerAvatarSystem.ensureReady();
+          if (!psionicSystem.isRegulating && !psiLightning.isAiming) cameraSystem.toggleViewMode();
+        },
+        gettingold: () => {
+          SUN_ARC_DURATION_S = (SUN_ARC_DURATION_S === SUN_ARC_DURATION_FAST_S)
+            ? SUN_ARC_DURATION_REAL_S
+            : SUN_ARC_DURATION_FAST_S;
+        },
+        glassfloor: () => {
+          glassfloorEnabled = !glassfloorEnabled;
+          if (terrainMesh) terrainMesh.visible = !glassfloorEnabled;
+          gravelSystem.setVisible(!glassfloorEnabled);
+          console.info('[cheat] glassfloor', glassfloorEnabled ? 'enabled' : 'disabled');
+        },
+        noclip: () => {
+          noclipEnabled = !noclipEnabled;
+          if (noclipEnabled) {
+            // Noclip uses first-person look: mouse up looks up, mouse down looks down.
+            // Preserve this view switch; the third-person orbit uses different pitch semantics.
+            noclipPreviousView = cameraSystem.viewMode;
+            cameraSystem.setViewMode('first');
+          } else cameraSystem.setViewMode(noclipPreviousView);
+          vel.set(0, 0, 0);
+          grounded = false;
+          supportedByCollider = false;
+          resetFallTracking();
+          console.info('[cheat] noclip', noclipEnabled ? 'enabled' : 'disabled');
+        },
+        player: () => {
+          OBSCURE_PLAYER_MODEL = !OBSCURE_PLAYER_MODEL;
+          playerAvatarSystem.loadModel();
+          console.info('[cheat] player model', OBSCURE_PLAYER_MODEL ? 'obscured' : 'visible');
+        },
+        ufo: () => skyAnomalySystem.spawn(),
+        critical: () => psionicSystem.setCriticality(0.74),
+        psimax: () => psionicSystem.setCriticality(0.60),
+        die: () => triggerDeath('cheat'),
+        godmode: () => psionicSystem.toggleGodMode(),
+      }
+    });
+
+    addEventListener('keydown', (e) => {
+      if (e.code !== 'KeyR') return;
+      if (e.repeat) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (deathActive) {
+        if (deathLockoutT <= 0) respawn();
+        return;
+      }
+      if (gameplayActive()) {
+        if (psionicSystem.isGodMode) {
+          document.getElementById('hint').textContent = 'Godmode: psi is fixed at 60%; regulation is disabled.';
+          return;
+        }
+        if (psiLightning.isAiming) psiLightning.cancel();
+        psionicSystem.toggleRegulation();
+      }
+    }, { capture: true });
+
+
+    /* =========================
+       LEVEL DATA
+    ========================= */
+    let mapW = 0, mapH = 0, cell = CELL_M, halfW = 0, halfH = 0;
+    let heights = null;
+    let waterMask = null;
+    let mushroomStoreSystem = null;
+
+    let MAX_LAND_HEIGHT = 0; // tallest interpreted green (computed at load)
+
+    function idx(x, y) { return y * mapW + x; }
+    function clamp(v, min, max) { return v < min ? min : (v > max ? max : v); }
+
+    function isWaterPixel(x, y) {
+      x = clamp(x, 0, mapW - 1);
+      y = clamp(y, 0, mapH - 1);
+      return waterMask && waterMask[idx(x, y)] === 1;
+    }
+
+    function isSubmergedGrid(ix, iy) {
+      ix = clamp(ix, 0, mapW - 1);
+      iy = clamp(iy, 0, mapH - 1);
+      const i = idx(ix, iy);
+      return !!waterMask && (waterMask[i] === 1 || heights[i] <= SEA_LEVEL);
+    }
+
+    function isWaterAtWorld(wx, wz) {
+      const gx = (wx + halfW) / cell;
+      const gy = (wz + halfH) / cell;
+      const ix = Math.floor(gx);
+      const iy = Math.floor(gy);
+      const isMapWater = (
+        isWaterPixel(ix, iy) || isWaterPixel(ix + 1, iy) || isWaterPixel(ix, iy + 1) || isWaterPixel(ix + 1, iy + 1) ||
+        isWaterPixel(ix - 1, iy) || isWaterPixel(ix, iy - 1) || isWaterPixel(ix + 2, iy) || isWaterPixel(ix, iy + 2)
+      );
+      if (isMapWater) return true;
+      return !!heights && heightAtWorldRaw(wx, wz) <= SEA_LEVEL;
+    }
+
+    function heightAtGrid(ix, iy) {
+      ix = clamp(ix, 0, mapW - 1);
+      iy = clamp(iy, 0, mapH - 1);
+      return heights[idx(ix, iy)];
+    }
+
+    function heightAtWorldRaw(wx, wz) {
+      const gx = (wx + halfW) / cell;
+      const gy = (wz + halfH) / cell;
+      const ix = Math.floor(gx), iy = Math.floor(gy);
+      const fx = THREE.MathUtils.clamp(gx - ix, 0, 1);
+      const fy = THREE.MathUtils.clamp(gy - iy, 0, 1);
+      const h00 = heightAtGrid(ix, iy), h10 = heightAtGrid(ix + 1, iy), h01 = heightAtGrid(ix, iy + 1), h11 = heightAtGrid(ix + 1, iy + 1);
+      return h00 * (1 - fx) * (1 - fy) + h10 * fx * (1 - fy) + h01 * (1 - fx) * fy + h11 * fx * fy;
+    }
+
+    function heightAtWorld(wx, wz) {
+      if (isWaterAtWorld(wx, wz)) return SEA_LEVEL;
+      return heightAtWorldRaw(wx, wz);
+    }
+
+    function heightForRender(wx, wz) {
+      if (isWaterAtWorld(wx, wz)) return FLOOR_Y;
+      return heightAtWorldRaw(wx, wz);
+    }
+
+    function terrainSlopeAtWorld(wx, wz) {
+      if (!heights) return 0;
+
+      const sampleDist = Math.max(1e-5, TERRAIN_SLOPE_SAMPLE_DIST);
+      const hL = heightAtWorld(wx - sampleDist, wz);
+      const hR = heightAtWorld(wx + sampleDist, wz);
+      const hD = heightAtWorld(wx, wz - sampleDist);
+      const hU = heightAtWorld(wx, wz + sampleDist);
+      const dhdx = (hR - hL) / (sampleDist * 2.0);
+      const dhdz = (hU - hD) / (sampleDist * 2.0);
+
+      return Math.hypot(dhdx, dhdz);
+    }
+
+    function terrainTraversalSpeedMultiplier(fromX, fromZ, toX, toZ, maxSlope, steepSlopeMultiplier) {
+      if (terrainSlopeAtWorld(toX, toZ) <= maxSlope + TRAVERSABLE_SLOPE_EPSILON) return 1.0;
+
+      const fromHeight = heightAtWorld(fromX, fromZ);
+      const toHeight = heightAtWorld(toX, toZ);
+      if (Math.abs(toHeight - fromHeight) > TRAVERSABLE_SLOPE_EPSILON) return steepSlopeMultiplier;
+      return 1.0;
+    }
+
+    function playerTerrainTraversalSpeedMultiplier(fromX, fromZ, toX, toZ) {
+      return terrainTraversalSpeedMultiplier(
+        fromX,
+        fromZ,
+        toX,
+        toZ,
+        PLAYER_MAX_TRAVERSABLE_SLOPE,
+        PLAYER_STEEP_SLOPE_SPEED_MULTIPLIER
+      );
+    }
+
+    function monsterTerrainTraversalSpeedMultiplier(fromX, fromZ, toX, toZ) {
+      return terrainTraversalSpeedMultiplier(
+        fromX,
+        fromZ,
+        toX,
+        toZ,
+        MONSTER_MAX_TRAVERSABLE_SLOPE,
+        MONSTER_STEEP_SLOPE_SPEED_MULTIPLIER
+      );
+    }
+
+    function findNearestDrySpawn(targetX, targetZ, maxRadius = 180) {
+      if (!heights) return { x: targetX, z: targetZ };
+      let best = null;
+      for (let r = 0; r <= maxRadius; r += 6) {
+        const steps = Math.max(12, Math.ceil((Math.PI * 2 * Math.max(r, 6)) / 6));
+        for (let i = 0; i < steps; i++) {
+          const a = (i / steps) * Math.PI * 2;
+          const x = THREE.MathUtils.clamp(targetX + Math.cos(a) * r, -halfW + 1, halfW - 1);
+          const z = THREE.MathUtils.clamp(targetZ + Math.sin(a) * r, -halfH + 1, halfH - 1);
+          if (isWaterAtWorld(x, z)) continue;
+          const h = heightAtWorldRaw(x, z);
+          if (!Number.isFinite(h) || h <= SEA_LEVEL) continue;
+          const d2 = (x - targetX) * (x - targetX) + (z - targetZ) * (z - targetZ);
+          if (!best || d2 < best.d2) best = { x, z, d2 };
+        }
+        if (best) return { x: best.x, z: best.z };
+      }
+      return { x: targetX, z: targetZ };
+    }
+
+    /* =========================
+       HEIGHT DERIVATION
+    ========================= */
+    function deriveHeightsAndWater(data) {
+      const derived = deriveTerrainData(data, {
+        mapW,
+        mapH,
+        isBorder,
+        isSpecial,
+        isGreenish,
+        baseMaxHeight: BASE_MAX_HEIGHT,
+        heightMultiplier: HEIGHT_MULTIPLIER,
+        heightCurvePow: HEIGHT_CURVE_POW,
+        heightLightTaper: HEIGHT_LIGHT_TAPER,
+        topFlatGnThreshold: TOP_FLAT_GN_THRESHOLD,
+        topFlattenStrength: TOP_FLATTEN_STRENGTH,
+        smoothPasses: SMOOTH_PASSES,
+        slopePasses: SLOPE_PASSES,
+        waterLevelClearance: WATER_LEVEL_CLEARANCE
+      });
+      MAX_LAND_HEIGHT = derived.maxLandHeight;
+      return derived;
+    }
+
+    /* =========================
+       TERRAIN
+    ========================= */
+    let terrainMesh = null;
+    let glassfloorEnabled = false;
+
+    function disposeMesh(m) {
+      disposeTerrainMesh(m, levelRoot);
+    }
+
+    function buildTerrainMesh() {
+      disposeMesh(terrainMesh); terrainMesh = null;
+      const built = buildTerrainMeshObject({
+        mapW,
+        mapH,
+        cell,
+        sampleStep: SAMPLE_STEP,
+        heightForRender,
+        gradientMap: TOON_RAMP_TUNDRA,
+        glassfloorEnabled,
+        levelRoot
+      });
+      terrainMesh = built.mesh;
+      halfW = built.halfW;
+      halfH = built.halfH;
+    }
+
+    const gravelSystem = createGravelSystem({
+      levelRoot,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH }),
+      isWaterAtWorld
+    });
+
+    addEventListener('keydown', (event) => {
+      if (event.code !== 'KeyZ' || event.repeat || !cameraSystem.isLocked) return;
+      if (gravelSystem.undoLastStamp()) event.preventDefault();
+    });
+
+    /* =========================
+       WORLD WATER PLANE
+    ========================= */
+    const waterSystem = createWaterSystem({
+      levelRoot,
+      isFirefox: IS_FIREFOX,
+      waterPlaneSize: WATER_PLANE_SIZE,
+      getState: () => ({ mapW, mapH, cell, halfW, halfH, heights, waterMask, seaLevel: SEA_LEVEL }),
+      isSubmergedGrid
+    });
+
+    const waterMonsterSystem = createWaterMonsterSystem({
+      levelRoot,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH, seaLevel: SEA_LEVEL }),
+      getPlayerPosition: () => playerPos,
+      camera,
+      playerHeight: PLAYER_CAPSULE_H + PLAYER_RADIUS * 2.0,
+      playerEyeHeight: PLAYER_EYE_HEIGHT,
+      getPlayerRadius: () => playerAvatarSystem.characterRadius,
+      heightAtWorld,
+      getOccluders: () => {
+        const solids = [];
+        levelRoot.updateMatrixWorld(true);
+        levelRoot.traverseVisible(object => {
+          if (!object.isMesh || object === terrainMesh) return;
+          const materials = Array.isArray(object.material) ? object.material : [object.material];
+          if (materials.some(material => material && !material.transparent && material.depthWrite)) solids.push(object);
+        });
+        return solids;
+      },
+      canAttack: () => !noclipEnabled && !psionicSystem.isGodMode,
+      canDamage: () => !deathActive && !noclipEnabled && !psionicSystem.isGodMode,
+      onImpact: () => {
+        const flash = document.createElement('div');
+        flash.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:59;box-shadow:inset 0 0 110px #c92446aa';
+        document.body.append(flash);
+        flash.animate([{opacity:1},{opacity:0}], {duration:450}).finished.finally(() => flash.remove());
+      },
+      onDeath: () => triggerDeath('waterOrb')
+    });
+
+    function buildWorldSeaPlane() {
+      waterSystem.buildWorldSeaPlane();
+    }
+
+    function buildShorelineMist(centerX = playerPos.x, centerZ = playerPos.z) {
+      waterSystem.buildShorelineMist(centerX, centerZ);
+    }
+
+    function updateShorelineMist(dt) {
+      waterSystem.updateShorelineMist(dt, playerPos.x, playerPos.z);
+    }
+
+    /* =========================
+       OLD ROOT SITE
+    ========================= */
+    function mapPixelToWorld2(x, y) {
+      return new THREE.Vector2(x * cell - halfW + cell * 0.5, y * cell - halfH + cell * 0.5);
+    }
+
+    const oldRootSiteSystem = createOldRootSiteSystem({
+      levelRoot,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH, seaLevel: SEA_LEVEL }),
+      hasHeights: () => !!heights
+    });
+
+    /* =========================
+       COLLIDERS + SPATIAL HASH
+    ========================= */
+    const colliderSystem = createColliderSystem({
+      getPlayerCapsuleConfig: () => ({
+        playerEyeHeight: PLAYER_EYE_HEIGHT,
+        playerRadius: PLAYER_RADIUS,
+        playerCapsuleH: PLAYER_CAPSULE_H
+      }),
+      getTreeTrunkColliderBuffer: () => FIR_TRUNK_COLLIDER_BUFFER,
+      getWorldBounds: () => ({ halfW, halfH }),
+      getSeaLevel: () => SEA_LEVEL,
+      heightAtWorld
+    });
+    const colliders = colliderSystem.colliders;
+
+    mushroomStoreSystem = createMushroomStoreSystem({
+      levelRoot,
+      colliders,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH }),
+      heightAtWorldRaw,
+      storeHeight: MUSHROOM_STORE_HEIGHT
+    });
+
+    const seawallSystem = createSeawallSystem({
+      levelRoot,
+      colliders,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH, seaLevel: SEA_LEVEL }),
+      heightAtWorldRaw,
+      seawallHeight: SEAWALL_HEIGHT,
+      playerCapsuleH: PLAYER_CAPSULE_H,
+      playerRadius: PLAYER_RADIUS
+    });
+
+    /* =========================
+       TREES (PROCEDURAL DOUGLAS FIR)
+    ========================= */
+    const MONSTER_BODY_RADIUS = 0.08 * MONSTER_SIZE_SCALE;
+    const treeSystem = createTreeSystem({
+      levelRoot,
+      colliders,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH, seaLevel: SEA_LEVEL }),
+      isTreePixel,
+      heightAtWorldRaw,
+      heightAtWorld,
+      isWaterAtWorld,
+      isInsideReserve: (wx, wz) => oldRootSiteSystem.isInsideReserve(wx, wz),
+      maxTrees: WORLD_DETAIL.maxTrees,
+      isFirefox: IS_FIREFOX
+    });
+
+    const spireSystem = createSpireSystem({
+      levelRoot,
+      colliders,
+      getMetrics: () => ({ mapW, mapH, cell, halfW, halfH, seaLevel: SEA_LEVEL }),
+      heightAtWorld
+    });
+
+    /* =========================
+       BUILDINGS (PERIMETER EXTRUDE)
+    ========================= */
+    let buildingWalls = null;
+
+    const BUILD_WALL_HEIGHT = 100.0;
+    const BUILD_WALL_SIMPLIFY_EPS_WORLD = 0.8;
+    const BUILD_WALL_COLOR = 0x141414;
+
+    function clearBuildings() {
+      if (buildingWalls) {
+        levelRoot.remove(buildingWalls);
+        buildingWalls.traverse(obj => {
+          if (obj.isMesh) {
+            obj.geometry.dispose();
+            obj.material.dispose();
+          }
+        });
+        buildingWalls = null;
+      }
+    }
+
+    function buildBuildingPerimeterFromBitmap(data) {
+      clearBuildings();
+      return;
+
+      const mask = new Uint8Array(mapW * mapH);
+      for (let y = 0; y < mapH; y++) {
+        for (let x = 0; x < mapW; x++) {
+          const i = idx(x, y);
+          const p = i * 4;
+          if (isHousePixel(data[p], data[p + 1], data[p + 2], data[p + 3])) mask[i] = 1;
+        }
+      }
+
+      const edges = new Map();
+      function addEdge(x0, y0, x1, y1) {
+        const k = `${x0},${y0}`;
+        let arr = edges.get(k);
+        if (!arr) { arr = []; edges.set(k, arr); }
+        arr.push([x1, y1]);
+      }
+      function inside(x, y) {
+        if (x < 0 || y < 0 || x >= mapW || y >= mapH) return 0;
+        return mask[idx(x, y)];
+      }
+
+      for (let y = 0; y < mapH; y++) {
+        for (let x = 0; x < mapW; x++) {
+          if (!inside(x, y)) continue;
+
+          if (!inside(x, y - 1)) addEdge(x, y, x + 1, y);
+          if (!inside(x + 1, y)) addEdge(x + 1, y, x + 1, y + 1);
+          if (!inside(x, y + 1)) addEdge(x + 1, y + 1, x, y + 1);
+          if (!inside(x - 1, y)) addEdge(x, y + 1, x, y);
+        }
+      }
+
+      const used = new Set();
+      function eKey(x0, y0, x1, y1) { return `${x0},${y0}->${x1},${y1}`; }
+
+      const loops = [];
+
+      for (const [startK, outs] of edges) {
+        const [sx, sy] = startK.split(',').map(Number);
+        for (const [nx, ny] of outs) {
+          const ek = eKey(sx, sy, nx, ny);
+          if (used.has(ek)) continue;
+
+          const loop = [[sx, sy]];
+          used.add(ek);
+
+          let cx = nx, cy = ny;
+          loop.push([cx, cy]);
+
+          let guard = 0;
+          while (guard++ < 200000) {
+            if (cx === sx && cy === sy) break;
+
+            const outArr = edges.get(`${cx},${cy}`);
+            if (!outArr || outArr.length === 0) break;
+
+            let found = null;
+            for (const [ux, uy] of outArr) {
+              const kk = eKey(cx, cy, ux, uy);
+              if (!used.has(kk)) {
+                found = [ux, uy, kk];
+                break;
+              }
+            }
+            if (!found) break;
+
+            const [ux, uy, kk] = found;
+            used.add(kk);
+            cx = ux; cy = uy;
+            loop.push([cx, cy]);
+          }
+
+          if (loop.length >= 4 && loop[0][0] === loop[loop.length - 1][0] && loop[0][1] === loop[loop.length - 1][1]) {
+            loops.push(loop);
+          }
+        }
+      }
+
+      if (!loops.length) return;
+
+      buildingWalls = new THREE.Group();
+      levelRoot.add(buildingWalls);
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: BUILD_WALL_COLOR,
+        roughness: 0.8,
+        metalness: 0.0,
+        emissive: 0x080808,
+        emissiveIntensity: 0.35
+      });
+
+      for (const loop of loops) {
+        const pts = [];
+        for (let i = 0; i < loop.length; i++) {
+          const gx = loop[i][0];
+          const gy = loop[i][1];
+
+          const wx = gx * cell - halfW;
+          const wz = gy * cell - halfH;
+
+          pts.push(new THREE.Vector2(wx, -wz));
+        }
+
+        const simp = simplifyRDP2D(pts, BUILD_WALL_SIMPLIFY_EPS_WORLD);
+        if (simp.length < 4) continue;
+
+        const shape = new THREE.Shape(simp);
+
+        const extrude = new THREE.ExtrudeGeometry(shape, {
+          depth: BUILD_WALL_HEIGHT,
+          bevelEnabled: false,
+          steps: 1
+        });
+
+        extrude.rotateX(-Math.PI / 2);
+
+        let cx = 0, cz = 0;
+        for (const v of simp) {
+          cx += v.x;
+          cz += -v.y;
+        }
+        cx /= simp.length;
+        cz /= simp.length;
+
+        const baseY = Math.max(SEA_LEVEL, heightAtWorld(cx, cz));
+        extrude.translate(0, baseY, 0);
+
+        const mesh = new THREE.Mesh(extrude, mat);
+        mesh.castShadow = false;
+        mesh.receiveShadow = false;
+        mesh.renderOrder = 3;
+
+        buildingWalls.add(mesh);
+
+        let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+        for (const v of simp) {
+          const x = v.x;
+          const z = -v.y;
+          minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+          minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z);
+        }
+        colliders.push({
+          type: 'box',
+          min: new THREE.Vector3(minX, baseY, minZ),
+          max: new THREE.Vector3(maxX, baseY + BUILD_WALL_HEIGHT, maxZ)
+        });
+      }
+    }
+
+    function simplifyRDP2D(points, eps) {
+      if (points.length <= 4) return points;
+
+      let pts = points;
+      const last = pts[pts.length - 1];
+      const first = pts[0];
+      if (last.x === first.x && last.y === first.y) pts = pts.slice(0, -1);
+
+      function distPointToSeg(p, a, b) {
+        const vx = b.x - a.x, vy = b.y - a.y;
+        const wx = p.x - a.x, wy = p.y - a.y;
+        const c1 = vx * wx + vy * wy;
+        if (c1 <= 0) return Math.hypot(p.x - a.x, p.y - a.y);
+        const c2 = vx * vx + vy * vy;
+        if (c2 <= c1) return Math.hypot(p.x - b.x, p.y - b.y);
+        const t = c1 / c2;
+        const px = a.x + t * vx, py = a.y + t * vy;
+        return Math.hypot(p.x - px, p.y - py);
+      }
+
+      function rdp(arr) {
+        if (arr.length <= 2) return arr;
+        const a = arr[0], b = arr[arr.length - 1];
+        let maxD = -1, idxMax = -1;
+        for (let i = 1; i < arr.length - 1; i++) {
+          const d = distPointToSeg(arr[i], a, b);
+          if (d > maxD) { maxD = d; idxMax = i; }
+        }
+        if (maxD > eps) {
+          const left = rdp(arr.slice(0, idxMax + 1));
+          const right = rdp(arr.slice(idxMax));
+          return left.slice(0, -1).concat(right);
+        }
+        return [a, b];
+      }
+
+      let farI = 0, farD = -1;
+      for (let i = 0; i < pts.length; i++) {
+        const d = Math.hypot(pts[i].x - pts[0].x, pts[i].y - pts[0].y);
+        if (d > farD) { farD = d; farI = i; }
+      }
+      const rotated = pts.slice(farI).concat(pts.slice(0, farI));
+      const open = rotated.concat([rotated[0]]);
+
+      const simp = rdp(open);
+
+      if (simp.length && (simp[0].x !== simp[simp.length - 1].x || simp[0].y !== simp[simp.length - 1].y)) {
+        simp.push(new THREE.Vector2(simp[0].x, simp[0].y));
+      }
+      return simp;
+    }
+
+    /* =========================
+       BRIDGE (LONG PRISM FROM #c0c0c0)
+    ========================= */
+    let bridgeMesh = null;
+
+    // East escape trigger tuning
+    const EAST_WALL_EPS = 0.15;     // how close to the bound counts as "touch"
+    const EAST_REQUIRE_BRIDGE = true; // set false if you want ANY east-wall touch to kill
+
+    const BRIDGE_TOL = 10;
+    function isBridgePixel(r, g, b, a) {
+      if (a < 16) return false;
+      return Math.abs(r - 192) <= BRIDGE_TOL &&
+        Math.abs(g - 192) <= BRIDGE_TOL &&
+        Math.abs(b - 192) <= BRIDGE_TOL;
+    }
+
+    function median(arr) {
+      if (!arr.length) return 0;
+      const a = arr.slice().sort((x, y) => x - y);
+      const mid = (a.length / 2) | 0;
+      return (a.length % 2) ? a[mid] : (a[mid - 1] + a[mid]) * 0.5;
+    }
+
+    function collectBridgeBandFromBitmap(data) {
+      const cols = [];
+      let minX = Infinity;
+      let foundAny = false;
+
+      for (let x = 0; x < mapW; x++) {
+        let colMinY = Infinity;
+        let colMaxY = -Infinity;
+        let hit = false;
+
+        for (let y = 0; y < mapH; y++) {
+          const i = idx(x, y);
+          const p = i * 4;
+          if (isBridgePixel(data[p], data[p + 1], data[p + 2], data[p + 3])) {
+            hit = true;
+            foundAny = true;
+            colMinY = Math.min(colMinY, y);
+            colMaxY = Math.max(colMaxY, y);
+          }
+        }
+
+        if (hit) {
+          cols.push({ x, minY: colMinY, maxY: colMaxY });
+          minX = Math.min(minX, x);
+        }
+      }
+
+      if (!foundAny) return null;
+
+      const thicknessPx = cols.map(c => (c.maxY - c.minY + 1));
+      const centerYPx = cols.map(c => (c.minY + c.maxY) * 0.5);
+
+      const widthPx = Math.max(1, Math.round(median(thicknessPx)));
+      const centerY = median(centerYPx);
+
+      return { startX: minX, widthPx, centerY };
+    }
+
+    function buildBridgePrism(band) {
+      if (bridgeMesh) {
+        levelRoot.remove(bridgeMesh);
+        bridgeMesh.geometry.dispose();
+        bridgeMesh.material.dispose();
+        bridgeMesh = null;
+      }
+      if (!band) return;
+
+      const BRIDGE_THICKNESS_Y = 2.0;
+      const BRIDGE_COLOR = 0xc0c0c0;
+
+      const bridgeWidthZ = Math.max(0.75, band.widthPx * cell);
+
+      const xStart = band.startX * cell - halfW;
+      const xEnd = SKY_RADIUS;
+      const bridgeLengthX = xEnd - xStart;
+
+      const zCenter = (band.centerY * cell - halfH) + cell * 0.5;
+
+      const yBase = MAX_LAND_HEIGHT;
+
+      const geo = new THREE.BoxGeometry(bridgeLengthX, BRIDGE_THICKNESS_Y, bridgeWidthZ);
+      const mat = new THREE.MeshStandardMaterial({
+        color: BRIDGE_COLOR,
+        roughness: 0.7,
+        metalness: 0.15,
+        emissive: 0x050505,
+        emissiveIntensity: 0.25
+      });
+
+      bridgeMesh = new THREE.Mesh(geo, mat);
+      bridgeMesh.position.set(
+        xStart + bridgeLengthX * 0.5,
+        yBase + BRIDGE_THICKNESS_Y * 0.5,
+        zCenter
+      );
+      bridgeMesh.renderOrder = 4;
+      levelRoot.add(bridgeMesh);
+
+      colliders.push({
+        type: 'box',
+        min: new THREE.Vector3(xStart, yBase, zCenter - bridgeWidthZ * 0.5),
+        max: new THREE.Vector3(xEnd, yBase + BRIDGE_THICKNESS_Y, zCenter + bridgeWidthZ * 0.5)
+      });
+    }
+
+    /* =========================
+       ASSET-SAFE LOADING + FALLBACK AVATAR
+    ========================= */
+    function isUnderAssets(url) {
+      return typeof url === 'string' && url.includes('/assets/');
+    }
+
+    async function safeLoad(label, url, loaderFn) {
+      if (!url) return null;
+      try {
+        return await loaderFn(url);
+      } catch (err) {
+        if (isUnderAssets(url)) {
+          console.warn(`[assets] failed to load ${label}: ${url}`, err);
+          return null;
+        }
+        console.warn(`[load] failed to load ${label}: ${url}`, err);
+        return null;
+      }
+    }
+
+    /* =========================
+       PLAYER AND MONSTER MODELS
+    ========================= */
+    const loader = new GLTFLoader();
+
+    const characterMeasureBox = new THREE.Box3();
+    const characterMeasureSize = new THREE.Vector3();
+
+    function measuredCharacterRadius(root, fallbackRadius) {
+      if (!root) return fallbackRadius;
+      characterMeasureBox.setFromObject(root);
+      characterMeasureBox.getSize(characterMeasureSize);
+      const diameter = Math.max(characterMeasureSize.x, characterMeasureSize.z);
+      if (!Number.isFinite(diameter) || diameter <= 0) return fallbackRadius;
+      return Math.max(0.05, diameter * 0.5 + CHARACTER_COLLIDER_BUFFER);
+    }
+
+    function applyCharacterShading(root) {
+      if (!root) return;
+      root.traverse(o => {
+        if (!o.isMesh) return;
+        const base = (o.material && o.material.color && o.material.color.isColor)
+          ? o.material.color.clone()
+          : new THREE.Color(0xffffff);
+        const mat = makeCharacterToonPhongMaterial(base);
+        if (o.isSkinnedMesh) mat.skinning = true;
+        mat.needsUpdate = true;
+        o.material = mat;
+      });
+    }
+
+    const playerAvatarSystem = createPlayerAvatarSystem({
+      scene,
+      camera,
+      loader,
+      defaultCharacterRadius: PLAYER_CHARACTER_RADIUS_DEFAULT,
+      playerCapsuleH: PLAYER_CAPSULE_H,
+      playerRadius: PLAYER_RADIUS,
+      safeLoad,
+      applyCharacterShading,
+      measuredCharacterRadius,
+      makeCharacterToonPhongMaterial,
+      getObscurePlayerModel: () => OBSCURE_PLAYER_MODEL
+    });
+    const trackedRobotSystem = createTrackedRobotSystem({
+      scene, camera, heightAtWorld,
+      playerVisualHeight: (PLAYER_CAPSULE_H + 2 * PLAYER_RADIUS) * 0.03
+    });
+    trackedRobotSystem.load().catch(error => console.error('[robot] Sprite load failed:', error));
+    const playerRoot = playerAvatarSystem.root;
+    const playerOrbitCenter = new THREE.Vector3();
+    requestPlayerWalkCycle = () => playerAvatarSystem.requestWalkCycle();
+
+    const monsterSystem = createMonsterSystem({
+      modelFactory: () => createMonsterModelVisual({height:MONSTER_HEIGHT}),
+      playerRunSpeed: SPEED_SPRINT,
+      worldUnitsPerMeter: 1, // Terrain coordinates are meters; model scale is visual only.
+      getSlopeSpeedMultiplier: slopeSpeedMultiplierAt,
+      getPlayerMovementSpeed: () => noclipEnabled ? 0 : Math.hypot(vel.x, vel.z),
+      onPlayerContact: () => { if (!noclipEnabled) triggerDeath('monster'); },
+      scene,
+      camera,
+      loader,
+      bodyRadius: MONSTER_BODY_RADIUS,
+      defaultCharacterRadius: MONSTER_CHARACTER_RADIUS_DEFAULT,
+      safeLoad,
+      applyCharacterShading,
+      measuredCharacterRadius,
+      makeCharacterToonPhongMaterial,
+      getSpawnRegion: () => characterSpawnRegion,
+      getPlayerPos: () => playerPos,
+      getPlayerCharacterRadius: () => playerAvatarSystem.characterRadius,
+      getCameraYaw: () => cameraSystem.yaw,
+      getWorldBounds: () => ({ halfW, halfH }),
+      getSeaLevel: () => SEA_LEVEL,
+      heightAtWorld,
+      isWaterAtWorld,
+      terrainTraversalSpeedMultiplier: monsterTerrainTraversalSpeedMultiplier,
+      getSightOccluders: () => {
+        const solids = [];
+        levelRoot.updateMatrixWorld(true);
+        levelRoot.traverseVisible(object => {
+          if (!object.isMesh || object === terrainMesh) return;
+          const materials = Array.isArray(object.material) ? object.material : [object.material];
+          if (materials.some(material => material && !material.transparent && material.depthWrite)) solids.push(object);
+        });
+        return solids;
+      },
+      colliderSystem
+    });
+
+    const monsterProximityMusic = createMonsterProximityMusic();
+    const unlockMonsterMusic = () => { void monsterProximityMusic.unlock(); };
+    window.addEventListener('pointerdown', unlockMonsterMusic, { passive: true, capture: true });
+    window.addEventListener('keydown', unlockMonsterMusic, { passive: true, capture: true });
+    window.addEventListener('blur', () => monsterProximityMusic.silence());
+    window.addEventListener('pagehide', () => monsterProximityMusic.dispose());
+    window.__mfMonsterMusicState = () => monsterProximityMusic.state;
+
+    const psionicSystem = createPsionicSystem({
+      rootEl: document.getElementById('psionicHud'),
+      fillEl: document.getElementById('psionicFill'),
+      valueEl: document.getElementById('psionicValue'),
+      cameraSystem,
+      monsterSystem
+    });
+
+    let monsterHealthTimer = 0;
+    const monsterHealthScreen = new THREE.Vector3();
+    const monsterHealthBox = new THREE.Box3();
+    const psiLightning = createPsiLightning({
+      scene, camera, cameraSystem, psionicSystem, heightAtWorld,
+      getGroundMesh: () => terrainMesh,
+      onImpact: (point, radius) => {
+        if (monsterSystem.hitByPsionicLightning(point, radius)) {
+          psionicSystem.dischargeStrike();
+          monsterHealthTimer = 3;
+        }
+      },
+      isValidGround: (x, z) => !!heights && Math.abs(x) < halfW && Math.abs(z) < halfH,
+      scale: PLAYER_SCALE, handEl: document.getElementById('psiLightningHand')
+    });
+    addEventListener('keydown', (e) => {
+      if (!['KeyF', 'Space'].includes(e.code) || e.repeat || !gameplayActive() || deathActive) return;
+      e.preventDefault();
+      if (e.code === 'KeyF') {
+        if (psionicSystem.isRegulating) psionicSystem.cancelRegulation();
+        const entered = psiLightning.toggleAiming();
+        if (!entered && !psionicSystem.isCritical) document.getElementById('hint').textContent = 'Casting mode requires at least 60% psi.';
+      }
+      else {
+        const fired = psiLightning.cast();
+        const hint = document.getElementById('hint');
+        if (!fired && hint) {
+          hint.textContent = !psiLightning.isAiming ? 'Press F to enter casting mode.'
+            : !psionicSystem.canCastStrike ? 'Recharge to 60% psi before another strike.'
+            : psiLightning.isCasting || psiLightning.cooldownRemaining > 0 ? 'Strike is cooling down.'
+            : 'Aim at ground within 20 meters to cast.';
+        }
+      }
+    });
+
+    /* =========================
+       PLAYER SPAWN
+    ========================= */
+    let characterSpawnRegion = null;
+
+    function findMarkerRegion(data, isMarkerPixel) {
+      const points = [];
+      let sumX = 0;
+      let sumY = 0;
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      let maxY = -Infinity;
+
+      for (let y = 0; y < mapH; y++) {
+        for (let x = 0; x < mapW; x++) {
+          const p = idx(x, y) * 4;
+          const r = data[p], g = data[p + 1], b = data[p + 2], a = data[p + 3];
+          if (!isMarkerPixel(r, g, b, a)) continue;
+          points.push({ x, y });
+          sumX += x;
+          sumY += y;
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
+        }
+      }
+
+      if (!points.length) return null;
+
+      const cx = sumX / points.length;
+      const cy = sumY / points.length;
+      let monsterPixel = points[0];
+      let farthestD2 = -1;
+      for (const p of points) {
+        const dx = p.x - cx;
+        const dy = p.y - cy;
+        const d2 = dx * dx + dy * dy;
+        if (d2 > farthestD2) {
+          farthestD2 = d2;
+          monsterPixel = p;
+        }
+      }
+
+      const player = mapPixelToWorld2(cx, cy);
+      const monster = mapPixelToWorld2(monsterPixel.x, monsterPixel.y);
+      return {
+        cx,
+        cy,
+        diamPx: Math.max(1, Math.hypot(maxX - minX + 1, maxY - minY + 1)),
+        player: { x: player.x, z: player.y },
+        monster: { x: monster.x, z: monster.y }
+      };
+    }
+
+    /* =========================
+       PLAYER STATE
+    ========================= */
+    const forwardV = new THREE.Vector3();
+    const rightV = new THREE.Vector3();
+    const noclipForwardV = new THREE.Vector3();
+    const wish = new THREE.Vector3();
+    const vel = new THREE.Vector3();
+    const playerPos = new THREE.Vector3(0, PLAYER_EYE_HEIGHT, 6);
+    const spawnPos = new THREE.Vector3();
+    const playerSpeedometerEl = document.getElementById('playerSpeedometer');
+    const playerSpeedValueEl = document.getElementById('playerSpeedValue');
+    let displayedPlayerSpeed = 0;
+    let playerSteepSlopePenaltyActive = false;
+    let noclipEnabled = false;
+    let noclipPreviousView = 'third';
+
+    function updatePlayerSpeedometer(speed, dt, isPenalized) {
+      if (playerSpeedometerEl) playerSpeedometerEl.hidden = !(noclipEnabled || psionicSystem.isGodMode);
+      const response = 1.0 - Math.exp(-12.0 * dt);
+      displayedPlayerSpeed = THREE.MathUtils.lerp(displayedPlayerSpeed, speed, response);
+      if (displayedPlayerSpeed < 0.05) displayedPlayerSpeed = 0;
+      if (playerSpeedValueEl) playerSpeedValueEl.textContent = displayedPlayerSpeed.toFixed(1);
+      if (playerSpeedometerEl) playerSpeedometerEl.classList.toggle('is-penalized', isPenalized);
+    }
+
+    /* =========================
+       DEATH SYSTEM (DROWNING v1)
+    ========================= */
+    const DEATH_POEMS = {
+      waterOrb: 'Cold light tears through you. You have died.\n\nStarting over…',
+      cheat: 'You have died.\n\nStarting over…',
+      overload: 'Psionic energy overwhelms you. You have died.\n\nStarting over…',
+      monster: 'The monster catches you. You have died.\n\nStarting over…',
+      drown: `You plummet into the great red sea, you fail to float and twist in unnatural ways as you feel your lungs fill with a familiar iron-tasting viscous fluid.\n\nYou have died.`,
+      exposure: `You attempt to flee by mantling up to the sky bridge, and walking across its infinite stretch to a seemingly more distant horizon; you fathom that marching onward for eternity is better than continued torment, but the cold starts to nip at your flesh, your fingers go numb, you shiver uncontrollably, and you eventually die from exposure.`,
+      treefall: `Your clever attempts at breaking down trees to create a raft are thwarted as your feet give way and you tumble to the cold hard snow below.`,
+      fall: `The ground rushes up with terrible certainty. The mountain keeps the shape you leave behind.\n\nYou have died.`
+    };
+
+    let deathActive = false;
+    let deathCause = '';
+    let monsterRestartTimer = 0;
+    let deathSinkTargetEyeY = 0;
+    let deathLockoutT = 0;
+    let fallPeakFootY = playerPos.y - PLAYER_EYE_HEIGHT;
+    let wasGroundedForFall = false;
+
+    const deathEl = document.getElementById('mfDeath');
+    const deathPoemEl = document.getElementById('mfDeathPoem');
+
+    function showDeathOverlay(text) {
+      if (deathPoemEl) deathPoemEl.textContent = text || '';
+      if (deathEl) {
+        deathEl.style.display = 'grid';
+        deathEl.setAttribute('aria-hidden', 'false');
+      }
+    }
+
+    function hideDeathOverlay() {
+      if (deathEl) {
+        deathEl.style.display = 'none';
+        deathEl.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    function resetFallTracking() {
+      fallPeakFootY = playerPos.y - PLAYER_EYE_HEIGHT;
+      wasGroundedForFall = grounded;
+    }
+
+    function landedAfterFatalFall(footY, previousFootY) {
+      let fatalLanding = false;
+
+      if (!grounded) {
+        if (wasGroundedForFall) fallPeakFootY = Math.max(fallPeakFootY, previousFootY);
+        else fallPeakFootY = Math.max(fallPeakFootY, footY);
+      } else if (!wasGroundedForFall) {
+        fatalLanding = (fallPeakFootY - footY) >= FATAL_FALL_DISTANCE;
+        fallPeakFootY = footY;
+      } else {
+        fallPeakFootY = footY;
+      }
+
+      wasGroundedForFall = grounded;
+      return fatalLanding;
+    }
+
+    function triggerDeath(cause) {
+      if (psionicSystem.isGodMode && cause !== 'cheat') return;
+      if (deathActive) return;
+      psionicSystem.cancelRegulation();
+      deathActive = true;
+      deathCause = cause || 'drown';
+      monsterRestartTimer = ['monster', 'overload', 'cheat', 'waterOrb'].includes(deathCause) ? 1.5 : 0;
+      psiLightning.cancel();
+      keys.clear();
+
+      // sink the *eye* about half player height below the surface
+      deathSinkTargetEyeY = SEA_LEVEL - (PLAYER_EYE_HEIGHT * 0.5);
+      deathLockoutT = 0.10; // tiny delay so we don't instantly respawn by stray key
+
+      // stop motion immediately
+      vel.set(0, 0, 0);
+      grounded = false;
+      resetFallTracking();
+
+      showDeathOverlay(DEATH_POEMS[deathCause] || 'You have died.');
+    }
+
+    async function respawn() {
+      // ✅ reset state first
+      deathActive = false;
+      deathCause = '';
+      monsterRestartTimer = 0;
+      monsterHealthTimer = 0;
+      deathLockoutT = 0;
+
+      hideDeathOverlay();
+
+      // ✅ hard reset movement state
+      vel.set(0, 0, 0);
+      grounded = false;
+      supportedByCollider = false;
+
+      // ✅ teleport to spawn
+      playerPos.copy(spawnPos);
+      resetFallTracking();
+      monsterSystem.resetEncounter();
+      waterMonsterSystem.reset();
+      psiLightning.cancel({ resetCooldown: true });
+      psionicSystem.reset();
+
+      // re-lock pointer (R is usually a user gesture)
+      const c = document.getElementById('c');
+      if (c && !document.pointerLockElement) {
+        cameraSystem.relockPointer();
+      }
+    }
+
+    function playerFootY() {
+      return playerPos.y - PLAYER_EYE_HEIGHT;
+    }
+
+    function updateDeath(dt) {
+      if (['monster', 'overload', 'cheat', 'waterOrb'].includes(deathCause)) {
+        monsterRestartTimer -= dt;
+        if (monsterRestartTimer <= 0) respawn();
+        return;
+      }
+      deathLockoutT = Math.max(0, deathLockoutT - dt); // ✅ tick down lockout
+
+      const sinkSpeed = 1.65;
+      playerPos.y = THREE.MathUtils.lerp(
+        playerPos.y,
+        deathSinkTargetEyeY,
+        1.0 - Math.pow(0.000001, dt * sinkSpeed)
+      );
+    }
+
+    let grounded = false;
+    let supportedByCollider = false;
+
+    /* =========================
+       SLOPE SPEED helper (GROUND ONLY)
+    ========================= */
+    function slopeSpeedMultiplierAt(x, z, moveDirXZ) {
+      if (!moveDirXZ || moveDirXZ.lengthSq() < 1e-8) return 1.0;
+
+      const dx = moveDirXZ.x;
+      const dz = moveDirXZ.z;
+
+      const fX = x + dx * SLOPE_SAMPLE_DIST;
+      const fZ = z + dz * SLOPE_SAMPLE_DIST;
+      const bX = x - dx * SLOPE_SAMPLE_DIST;
+      const bZ = z - dz * SLOPE_SAMPLE_DIST;
+
+      const hF = heightAtWorld(fX, fZ);
+      const hB = heightAtWorld(bX, bZ);
+
+      const rise = (hF - hB);
+      const run = (2.0 * SLOPE_SAMPLE_DIST);
+      const slope = rise / Math.max(1e-5, run);
+
+      if (terrainSlopeAtWorld(fX, fZ) > PLAYER_MAX_TRAVERSABLE_SLOPE + TRAVERSABLE_SLOPE_EPSILON) {
+        return 1.0;
+      }
+
+      if (slope > 0) {
+        const penalty = 1.0 - (slope * SLOPE_STRENGTH_UP);
+        return THREE.MathUtils.clamp(penalty, SLOPE_MAX_UP_PENALTY, 1.0);
+      } else {
+        const boost = 1.0 + (-slope * SLOPE_STRENGTH_DN);
+        return THREE.MathUtils.clamp(boost, 1.0, SLOPE_MAX_DN_BOOST);
+      }
+    }
+
+    /* =========================
+       LOAD MAP / BUILD LEVEL
+    ========================= */
+    async function loadLevel() {
+      levelRoot.clear();
+      colliderSystem.clear();
+
+      const img = new Image();
+      img.src = MAP_URL + '?v=' + Date.now();
+      await img.decode();
+
+      const bmp = await createImageBitmap(img);
+      mapW = bmp.width;
+      mapH = bmp.height;
+      cell = CELL_M;
+
+      const sizeX = mapW * cell;
+      const sizeZ = mapH * cell;
+      halfW = sizeX / 2;
+      halfH = sizeZ / 2;
+
+      const c = document.createElement('canvas');
+      c.width = mapW;
+      c.height = mapH;
+      const ctx = c.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(bmp, 0, 0);
+      const data = ctx.getImageData(0, 0, mapW, mapH).data;
+      const dataOriginal = new Uint8ClampedArray(data);
+
+      const dataWorld = new Uint8ClampedArray(dataOriginal);
+      const dataForHeights = new Uint8ClampedArray(dataWorld);
+
+      // Marker/object extraction should use original pixels; height derivation mutates channels.
+      characterSpawnRegion = findMarkerRegion(dataWorld, isPlayerSpawnPixel);
+      const spireMarker = findMarkerRegion(dataWorld, isOldRootSpawnPixel);
+
+      const derived = deriveHeightsAndWater(dataForHeights);
+      restoreTerrainUnderMarker(dataWorld, derived.heights, {
+        mapW,
+        mapH,
+        isMarker: isMushroomStorePixel,
+        isTerrain: (r, g, b, a) => a >= 16 && isGreenish(r, g, b)
+      });
+      const mushroomGround = smoothMushroomGround(dataWorld, derived.heights, derived.waterMask, {
+        mapW, mapH, cell, halfW, halfH, sampleStep: SAMPLE_STEP,
+        mushroomHeight: MUSHROOM_STORE_HEIGHT,
+        fatalFallDistance: FATAL_FALL_DISTANCE,
+        landingMargin: SPEED_SPRINT * Math.sqrt(2 * MUSHROOM_STORE_HEIGHT / GRAVITY)
+      });
+      heights = derived.heights;
+      waterMask = derived.waterMask;
+      SEA_LEVEL = derived.seaLevel;
+      waterSystem.resetShorelineCache();
+
+      buildTerrainMesh();
+      mushroomStoreSystem.buildFromBitmap(dataWorld, mushroomGround);
+      gravelSystem.initialize({
+        sourceCanvas: c,
+        sourceContext: ctx,
+        sourcePixels: dataOriginal,
+        terrainMesh
+      });
+      buildWorldSeaPlane();
+      await waterMonsterSystem.build(dataWorld);
+
+      const blobs = treeSystem.collectBlobsFromBitmap(dataWorld);
+      treeSystem.buildInstancesFromBlobs(blobs);
+      spireSystem.build(spireMarker);
+
+      buildBuildingPerimeterFromBitmap(dataWorld);
+
+      const bridgeBand = collectBridgeBandFromBitmap(dataWorld);
+      buildBridgePrism(bridgeBand);
+      seawallSystem.buildFromBitmap(dataWorld);
+      await oldRootSiteSystem.build(dataWorld);
+
+      colliderSystem.rebuildGrid();
+
+      const mushroomSpawn = mushroomStoreSystem.state;
+      trackedRobotSystem.place(mushroomSpawn);
+      const spawnTarget = mushroomSpawn
+        ? { x: mushroomSpawn.centerX, z: mushroomSpawn.centerZ }
+        : characterSpawnRegion?.player || findNearestDrySpawn(0, 0);
+      const spawnFootY = mushroomSpawn
+        ? mushroomSpawn.floorY + mushroomSpawn.height
+        : Math.max(heightAtWorld(spawnTarget.x, spawnTarget.z), SEA_LEVEL);
+      const py = spawnFootY + PLAYER_EYE_HEIGHT;
+      playerPos.set(spawnTarget.x, py, spawnTarget.z);
+
+      spawnPos.copy(playerPos); // ✅ remember spawn for respawn
+      buildShorelineMist(playerPos.x, playerPos.z);
+
+      vel.set(0, 0, 0);
+      grounded = false;
+      resetFallTracking();
+    }
+
+    const CUTSCENE_IMAGES = [];
+    const REGULATION_IMAGES = [
+      './assets/ui/hand.png?v=3',
+      './assets/ui/mushroom.png?v=3'
+    ];
+
+    try {
+      // Start prewarming ASAP (in parallel)
+      const prewarmPromise = (async () => {
+        // images (decode too)
+        const p1 = window.__mfMemAssets?.prewarmImages([...CUTSCENE_IMAGES, ...REGULATION_IMAGES], {
+          concurrency: 2
+        });
+
+        // audio (fetch only; decode later after user gesture)
+        const p2 = window.__mfMemAssets?.prewarmFiles(WALK_STEP_SOUNDS, { concurrency: 2 });
+
+        await Promise.all([p1, p2].filter(Boolean));
+        return true;
+      })();
+
+      // Fetch the startup sprite sheets while building the level.
+      await Promise.all([loadLevel(), playerAvatarSystem.loadModel()]);
+
+      // IMPORTANT: don’t say “ready” until the level and cutscene assets are hot.
+      // Monster assets are large, so they keep loading in the background.
+      if (prewarmPromise) await prewarmPromise;
+
+    } catch (err) {
+      console.error('[init] world init failed:', err);
+    } finally {
+      window.__mfWorldReady = true;
+      window.dispatchEvent(new Event('mf:world-ready'));
+      setTimeout(() => {
+        monsterSystem.loadModel().catch((err) => {
+          console.warn('[monster] background load failed:', err);
+        });
+      }, 0);
+    }
+
+    /* =========================
+       MOVEMENT / PHYSICS STEP
+    ========================= */
+    function updatePlayer(dt, controlsEnabled = true) {
+      if (deathActive) {
+        updateDeath(dt);
+        return;
+      }
+
+      const footYBeforePhysics = playerPos.y - PLAYER_EYE_HEIGHT;
+
+      const f = controlsEnabled ? (controller.state.connected ? controller.state.moveY : (keys.has('KeyW') ? 1 : 0) - (keys.has('KeyS') ? 1 : 0)) : 0;
+      const s = controlsEnabled ? (controller.state.connected ? controller.state.moveX : (keys.has('KeyD') ? 1 : 0) - (keys.has('KeyA') ? 1 : 0)) : 0;
+      const sprint = controlsEnabled && !psionicSystem.isRegulating && (inputHas('ShiftLeft') || inputHas('ShiftRight'));
+      const psionicSpeed = psionicSystem.speedMultiplier;
+
+      // Reuse a single UP vector (no per-frame allocations)
+      const UP = (updatePlayer._UP ||= new THREE.Vector3(0, 1, 0));
+
+      // -------------------------
+      // Movement basis
+      // -------------------------
+      if (cameraSystem.viewMode === 'third') {
+        // Third-person: move relative to camera facing projected on XZ
+        camera.getWorldDirection(forwardV);
+        forwardV.y = 0;
+        if (forwardV.lengthSq() < 1e-8) forwardV.set(0, 0, -1);
+        forwardV.normalize();
+
+        // ✅ right = forward × up  (fixes A/D)
+        rightV.crossVectors(forwardV, UP).normalize();
+      } else {
+        // First-person: classic FPS forward (Three.js forward at yaw=0 is -Z)
+        forwardV.set(Math.sin(cameraSystem.yaw), 0, Math.cos(cameraSystem.yaw)).normalize();
+
+        // ✅ right = forward × up  (fixes A/D)
+        rightV.crossVectors(forwardV, UP).normalize();
+      }
+
+      // Build wish direction
+      wish.set(0, 0, 0);
+      wish.addScaledVector(forwardV, f);
+      wish.addScaledVector(rightV, s);
+      if (wish.lengthSq() > 1 || (!controller.state.connected && wish.lengthSq() > 0)) wish.normalize();
+
+      if (noclipEnabled) {
+        if (!controlsEnabled) { vel.set(0, 0, 0); return; }
+        const upInput = (keys.has('KeyE') ? 1 : 0) - ((keys.has('ControlLeft') || keys.has('ControlRight') || keys.has('KeyC')) ? 1 : 0);
+        const flySpeed = (sprint ? NOCLIP_SPRINT_SPEED : NOCLIP_SPEED) * psionicSpeed;
+
+        // Preserve noclip controls: W goes toward the view, S away, A screen-left, D screen-right.
+        // Derive both axes from the actual camera, including pitch. Do not replace this with
+        // hand-written yaw/pitch formulas: first-person rendering applies a yaw + PI offset,
+        // and the old formulas reversed W/S and disagreed with the strafe axis.
+        // Looking up/down must steer forward flight up/down without holding a mouse button.
+        camera.getWorldDirection(noclipForwardV).normalize();
+        rightV.set(1, 0, 0).applyQuaternion(camera.quaternion).normalize();
+
+        wish.set(0, 0, 0);
+        wish.addScaledVector(noclipForwardV, f);
+        wish.addScaledVector(rightV, s);
+        wish.y += upInput;
+        if (wish.lengthSq() > 1 || (!controller.state.connected && wish.lengthSq() > 0)) wish.normalize();
+
+        vel.copy(wish).multiplyScalar(flySpeed);
+        playerPos.addScaledVector(vel, dt);
+        playerPos.x = THREE.MathUtils.clamp(playerPos.x, -halfW + 1, halfW - 1);
+        playerPos.z = THREE.MathUtils.clamp(playerPos.z, -halfH + 1, halfH - 1);
+        grounded = false;
+        supportedByCollider = false;
+        footTimer = 0;
+        return;
+      }
+
+      // -------------------------
+      // Gravity (walking off edges still falls)
+      // -------------------------
+
+      vel.y -= GRAVITY * dt;
+
+
+
+      // -------------------------
+      // Horizontal motion
+      // -------------------------
+      if (grounded) {
+        const baseSpd = sprint ? SPEED_SPRINT : SPEED_WALK;
+        const slopeMul = slopeSpeedMultiplierAt(playerPos.x, playerPos.z, wish);
+        const spd = baseSpd * slopeMul * psionicSpeed;
+        vel.x = wish.x * spd;
+        vel.z = wish.z * spd;
+      } else {
+        const maxSpd = (sprint ? AIR_MAX_SPEED_SPRINT : AIR_MAX_SPEED_WALK) * psionicSpeed;
+        const targetX = wish.x * maxSpd;
+        const targetZ = wish.z * maxSpd;
+
+        const ax = (targetX - vel.x);
+        const az = (targetZ - vel.z);
+        const aLen = Math.hypot(ax, az);
+        if (aLen > 1e-6) {
+          const step = Math.min(aLen, AIR_ACCEL * dt);
+          vel.x += (ax / aLen) * step;
+          vel.z += (az / aLen) * step;
+        }
+
+        if (AIR_FRICTION > 0) {
+          const fr = Math.max(0, 1.0 - AIR_FRICTION * dt);
+          vel.x *= fr; vel.z *= fr;
+        }
+      }
+
+      // -------------------------
+      // Substep + collision
+      // -------------------------
+      const horizDist = Math.hypot(vel.x, vel.z) * dt;
+      const vertDist = Math.abs(vel.y) * dt;
+      const dist = horizDist + vertDist;
+      const steps = Math.max(1, Math.ceil(dist / SUBSTEP_DIST));
+      const subDt = dt / steps;
+
+      supportedByCollider = false;
+      const seaFloorY = SEA_LEVEL + PLAYER_EYE_HEIGHT;
+
+      for (let i = 0; i < steps; i++) {
+        const prevX = playerPos.x;
+        const prevY = playerPos.y;
+        const prevZ = playerPos.z;
+
+        const intendedX = playerPos.x + vel.x * subDt;
+        const intendedZ = playerPos.z + vel.z * subDt;
+        const terrainSpeedMultiplier = grounded
+          ? playerTerrainTraversalSpeedMultiplier(prevX, prevZ, intendedX, intendedZ)
+          : 1.0;
+        if (terrainSpeedMultiplier < 1.0) playerSteepSlopePenaltyActive = true;
+
+        playerPos.x += vel.x * subDt * terrainSpeedMultiplier;
+        playerPos.y += vel.y * subDt;
+        playerPos.z += vel.z * subDt * terrainSpeedMultiplier;
+
+        playerPos.x = THREE.MathUtils.clamp(playerPos.x, -halfW + 1, halfW - 1);
+        playerPos.z = THREE.MathUtils.clamp(playerPos.z, -halfH + 1, halfH - 1);
+
+        const supported = colliderSystem.resolvePlayerCollisions(playerPos, prevY, prevX, prevZ);
+        monsterSystem.resolvePlayerCollision(playerPos, playerAvatarSystem.characterRadius);
+
+        supportedByCollider = supported;
+        const groundY = heightAtWorld(playerPos.x, playerPos.z) + PLAYER_EYE_HEIGHT;
+        grounded = settleGroundContact(playerPos, vel, groundY, supportedByCollider, {
+          wasGrounded: grounded,
+          previousY: prevY,
+          previousGroundY: heightAtWorld(prevX, prevZ) + PLAYER_EYE_HEIGHT,
+          horizontalDistance: Math.hypot(playerPos.x - prevX, playerPos.z - prevZ)
+        });
+
+        if (!deathActive && playerPos.y < seaFloorY) {
+          playerPos.y = seaFloorY;
+          if (vel.y < 0) vel.y = 0;
+          grounded = true;
+        }
+      }
+
+      // POST-PHYSICS HAZARDS
+      const footY = playerPos.y - PLAYER_EYE_HEIGHT;
+
+      // must be over water AND actually touching it
+      if (
+        !deathActive &&
+        isWaterAtWorld(playerPos.x, playerPos.z) &&
+        footY <= SEA_LEVEL + 0.02
+      ) {
+        triggerDeath('drown');
+        return;
+      }
+
+      if (!deathActive && landedAfterFatalFall(footY, footYBeforePhysics)) {
+        triggerDeath('fall');
+        return;
+      }
+
+      // EAST WALL ESCAPE (exposure death)
+      // Uses the same clamp bounds you already apply: clamp to [-halfW+1, halfW-1]
+      if (!deathActive) {
+        const eastBoundX = (halfW - 1); // matches your clamp line
+        const touchingEast = playerPos.x >= (eastBoundX - EAST_WALL_EPS);
+
+        // Optional: only kill if you're up at bridge height.
+        // Your bridge is placed at yBase = MAX_LAND_HEIGHT and thickness is 2.0,
+        // so being "on the bridge" basically means your feet are near MAX_LAND_HEIGHT.
+        const onBridgeHeight = footY >= (MAX_LAND_HEIGHT - 1.0);
+
+        if (touchingEast && (!EAST_REQUIRE_BRIDGE || onBridgeHeight)) {
+          triggerDeath('exposure');
+          return;
+        }
+      }
+
+      // TREE BRANCH FAIL (trying to climb/break branches)
+      if (
+        !deathActive &&
+        grounded &&
+        supportedByCollider &&
+        colliderSystem.lastSupportTag === 'branch'
+      ) {
+        // Must be meaningfully above ground (prevents side-bumps / near-ground twigs)
+        const groundFootY = heightAtWorld(playerPos.x, playerPos.z);
+        const minClearance = 0.85 * PLAYER_SCALE; // tweak 0.6..1.2
+        const elevated = (footY - groundFootY) > minClearance;
+
+        if (elevated) {
+          triggerDeath('treefall');
+          return;
+        }
+      }
+
+      // -------------------------
+      // Footsteps (walking only)
+      // -------------------------
+      const horizSpeed = Math.hypot(vel.x, vel.z);
+
+      const isWalkingNow =
+        !deathActive &&
+        grounded &&
+        !sprint &&                 // ✅ NOT running
+        horizSpeed > 0.6;          // ✅ actually moving (not just holding keys)
+
+      if (isWalkingNow && isFootstepsReady()) {
+        footTimer += dt;
+
+        // optional: slight cadence scaling with speed (still simple)
+        const cadence = FOOTSTEP_INTERVAL_S * THREE.MathUtils.clamp(10.0 / Math.max(1e-3, horizSpeed), 0.75, 1.25);
+
+        if (footTimer >= cadence) {
+          playFootstep();
+          footTimer = 0;
+        }
+      } else {
+        footTimer = 0;
+      }
+
+    }
+
+    /* =========================
+       CAMERA + HERO SYNC
+    ========================= */
+    function updatePlayerModelAndCamera(dt) {
+      // Always guarantee avatar exists (even if assets fail, or toggled later)
+      playerAvatarSystem.ensureReady();
+
+
+      const sprint = !psionicSystem.isRegulating && (inputHas('ShiftLeft') || inputHas('ShiftRight'));
+      const moving = controller.state.connected ? Math.hypot(controller.state.moveX, controller.state.moveY) > 0 : (keys.has('KeyW') || keys.has('KeyA') || keys.has('KeyS') || keys.has('KeyD'));
+
+      // Each press starts a complete two-step gait; held input repeats at cycle boundaries.
+      playerAvatarSystem.setMode(sprint && moving, moving, grounded && !noclipEnabled && !deathActive);
+
+      // player model follows the capsule feet so jump is visible (not locked to terrain height)
+      const footY = playerPos.y - PLAYER_EYE_HEIGHT;
+      playerRoot.position.set(playerPos.x, footY, playerPos.z);
+
+      // Rotate player model to face movement direction when moving,
+      // otherwise retain her facing so the camera can orbit independently.
+      if (moving) {
+        // direction from wish vector (already normalized)
+        const ang = Math.atan2(wish.x, wish.z);
+        playerRoot.rotation.set(0, ang, 0);
+      }
+
+      // player model visibility: hide in first-person so she doesn't block view
+      playerAvatarSystem.setVisible(cameraSystem.viewMode === 'third');
+
+      cameraSystem.updateFollowCamera({
+        dt,
+        playerPos,
+        firstPersonEyeY: footY + BASE_EYE_HEIGHT,
+        orbitCenter: playerAvatarSystem.getOrbitCenter(playerOrbitCenter),
+        noclipEnabled
+      });
+      // Select the billboard frame after the camera's actual smoothed position is updated.
+      playerAvatarSystem.updateMixers(dt);
+    }
+
+    function updateGravelSpray() {
+      const spraying = keys.has('KeyG') && gameplayActive() && !deathActive && !noclipEnabled && grounded;
+      if (!spraying) {
+        gravelSystem.endStroke();
+        return;
+      }
+
+      const stampSize = Math.max(4.0, playerAvatarSystem.characterRadius * 2.0);
+      gravelSystem.updateStroke(playerPos.x, playerPos.z, stampSize);
+    }
+
+    /* =========================
+       LOOP
+    ========================= */
+    const sunDirWorld = new THREE.Vector3();
+    const sunDirView = new THREE.Vector3();
+    const clock = new THREE.Clock();
+    let lastRenderTime = 0;
+    let animationPaused = false;
+
+    document.addEventListener('visibilitychange', () => {
+      animationPaused = document.hidden;
+      if (animationPaused) monsterProximityMusic.silence();
+      if (!animationPaused) {
+        clock.getDelta();
+        lastRenderTime = performance.now();
+      }
+    });
+
+    function animate(now = 0) {
+      requestAnimationFrame(animate);
+      if (animationPaused) return;
+
+      const minFrameMs = 1000 / WORLD_DETAIL.targetFps;
+      if (now - lastRenderTime < minFrameMs) return;
+      lastRenderTime = now;
+
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const pad = controller.poll(document.hasFocus());
+      cameraSystem.setControllerActive(pad.connected);
+      if (pad.connected && gameplayActive() && !deathActive) cameraSystem.controllerLook(pad.lookX, pad.lookY, dt);
+      const padHint = document.getElementById('controllerHint');
+      padHint.hidden = !pad.connected;
+
+
+      // Check before regulation can drain a full meter, including the max-psi cheat.
+      if (!deathActive && psionicSystem.criticality >= 1) triggerDeath('overload');
+      psionicSystem.update(dt, gameplayActive() && !deathActive);
+      if (!deathActive && psionicSystem.criticality >= 1) triggerDeath('overload');
+
+	      sun.position.set(MOON_X, MOON_Y, MOON_Z);
+	      sun.target.position.set(0, 0, 0);
+	      sun.target.updateWorldMatrix(true, false);
+	      updateHorizonSunPosition(14000);
+
+      // Align all directional lighting to the sun axis
+      fill.position.copy(sun.position);
+      fill.target.position.set(0, 0, 0);
+      fill.target.updateWorldMatrix(true, false);
+
+      // Keep character specular aligned with the actual sun direction
+      sunDirWorld.copy(sun.position).normalize();
+      sunDirView.copy(sunDirWorld).transformDirection(camera.matrixWorldInverse);
+      for (const u of characterSunUniforms) u.value.copy(sunDirView);
+
+	      sun.color.setHex(MOON_LIGHT_COLOR);
+	      sun.intensity = MOON_LIGHT_INTENSITY;
+	      fill.color.setHex(MOON_LIGHT_COLOR);
+	      fill.intensity = MOON_LIGHT_INTENSITY;
+
+      paintSkyGradient(0);
+
+      let measuredPlayerSpeed = 0;
+      playerSteepSlopePenaltyActive = false;
+      if (deathActive) {
+        deathLockoutT = Math.max(0, deathLockoutT - dt);
+        updateDeath(dt);
+      } else {
+        if (window.__mfWorldReady && !document.getElementById('mfModal')) {
+          const playerXBeforeUpdate = playerPos.x;
+          const playerZBeforeUpdate = playerPos.z;
+          updatePlayer(dt, gameplayActive());
+          measuredPlayerSpeed = Math.hypot(
+            playerPos.x - playerXBeforeUpdate,
+            playerPos.z - playerZBeforeUpdate
+          ) / Math.max(dt, 1e-5);
+        }
+      }
+      updatePlayerSpeedometer(measuredPlayerSpeed, dt, playerSteepSlopePenaltyActive);
+      updateGravelSpray();
+
+	      if (!deathActive) monsterSystem.update(dt);
+      const monsterMusicActive = gameplayActive() && !deathActive && window.__mfWorldReady &&
+        !document.getElementById('mfModal') && monsterSystem.root.visible && !monsterSystem.isDead;
+      const monsterMusicDistance = monsterMusicActive
+        ? Math.hypot(playerPos.x - monsterSystem.root.position.x, playerPos.z - monsterSystem.root.position.z)
+        : Infinity;
+      monsterProximityMusic.update(monsterMusicDistance, monsterMusicActive);
+
+
+	      updatePlayerModelAndCamera(dt);
+          trackedRobotSystem.update();
+	      updateSkyCloudRings(dt);
+	      skyAnomalySystem.update(dt);
+	      spireSystem.update(dt);
+	      waterMonsterSystem.update(dt, gameplayActive() && !deathActive && window.__mfWorldReady && !document.getElementById('mfModal'));
+	      updateShorelineMist(dt);
+
+	      psiLightning.update(dt, gameplayActive() && !deathActive);
+      const cooldownEl = document.getElementById('psiCooldown');
+      cooldownEl.style.display = psiLightning.cooldownRemaining > 0 && !deathActive ? 'block' : 'none';
+      if (psiLightning.cooldownRemaining > 0) {
+        const progress = Math.round(psiLightning.cooldownProgress * 100);
+        cooldownEl.setAttribute('aria-valuenow', String(progress));
+        document.getElementById('psiCooldownFill').style.width = `${progress}%`;
+        document.getElementById('psiCooldownTime').textContent = `${psiLightning.cooldownRemaining.toFixed(1)}s`;
+      }
+      monsterHealthTimer = Math.max(0, monsterHealthTimer - dt);
+      const monsterHealth = document.getElementById('monsterHealth');
+      let showMonsterHealth = monsterHealthTimer > 0 && !monsterSystem.isDead && !deathActive;
+      if (showMonsterHealth) {
+        // Hidden animation models can have different bounds; anchor only to the visible pose.
+        monsterHealthBox.makeEmpty();
+        monsterSystem.root.updateWorldMatrix(true, true);
+        for (const pose of monsterSystem.root.children) {
+          if (pose.visible) monsterHealthBox.expandByObject(pose);
+        }
+        camera.updateWorldMatrix(true, false);
+        monsterHealthScreen.set(monsterSystem.root.position.x, (monsterHealthBox.isEmpty() ? monsterSystem.root.position.y + 2.2 : monsterHealthBox.max.y) + 0.4, monsterSystem.root.position.z);
+        monsterHealthScreen.project(camera);
+        showMonsterHealth = monsterHealthScreen.z >= -1 && monsterHealthScreen.z <= 1
+          && Math.abs(monsterHealthScreen.x) <= 1;
+        monsterHealth.style.left = `${THREE.MathUtils.clamp((monsterHealthScreen.x * 0.5 + 0.5) * innerWidth, 105, innerWidth - 105)}px`;
+        monsterHealth.style.top = `${THREE.MathUtils.clamp((-monsterHealthScreen.y * 0.5 + 0.5) * innerHeight, 65, innerHeight - 20)}px`;
+        monsterHealth.setAttribute('aria-valuenow', String(monsterSystem.health));
+        document.getElementById('monsterHealthValue').textContent = `${monsterSystem.health} / 2 HP`;
+        document.getElementById('monsterHealthFill').style.width = `${monsterSystem.health / 2 * 100}%`;
+      }
+      monsterHealth.style.display = showMonsterHealth ? 'block' : 'none';
+      worldCelShading.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
+
+    window.__mfResetWorld = async () => {
+      // If you want a “true reload”, you’re already doing the expensive rebuild here:
+      await loadLevel();
+      await playerAvatarSystem.loadModel();
+      await monsterSystem.loadModel();
+      monsterSystem.resetEncounter();
+      waterMonsterSystem.reset();
+      psiLightning.cancel({ resetCooldown: true });
+      psionicSystem.reset();
+
+      // If your world has any other runtime state to reset, do it here
+      vel.set(0, 0, 0);
+      grounded = false;
+    };
+
+    // Optional: give the cutscene a way to clear held keys
+    window.__mfClearKeys = () => {
+      keys.clear();
+    };
+
+    // Hand/mushroom interaction will call this while the luminous mushroom is exposed.
+    window.__mfSetMushroomLure = (active) => {
+      if (active) monsterSystem.beginMushroomAmbush();
+      else monsterSystem.setMushroomLureActive(false);
+    };
+  </script>
+  <!--<audio id="mfMusic" src="audio/megafuture_1.mp3" preload="auto" loop></audio>-->
+</body>
+
+</html>

@@ -1,0 +1,3693 @@
+{
+  "version": "water-painted-20261017-v1",
+  "cell": [
+    360,
+    360
+  ],
+  "frames": 240,
+  "files": [
+    "packed/level-standing.png",
+    "packed/level-swimming.png",
+    "packed/level-firing.png",
+    "packed/above-standing.png",
+    "packed/above-swimming.png",
+    "packed/above-firing.png",
+    "packed/below-standing.png",
+    "packed/below-swimming.png",
+    "packed/below-firing.png"
+  ],
+  "views": {
+    "level": {
+      "idle": [
+        {
+          "file": "packed/level-standing.png",
+          "x": 0,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            30,
+            105,
+            329,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 360,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            39,
+            113,
+            321,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 720,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            46,
+            115,
+            313,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 1080,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            49,
+            114,
+            310,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 0,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            33,
+            126,
+            327,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 360,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            45,
+            122,
+            315,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 720,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            40,
+            131,
+            319,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 1080,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            47,
+            142,
+            312,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 0,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            25,
+            129,
+            335,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 360,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            47,
+            142,
+            312,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 720,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            40,
+            131,
+            319,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 1080,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            45,
+            122,
+            315,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 0,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            33,
+            126,
+            327,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 360,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            49,
+            114,
+            310,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 720,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            46,
+            115,
+            313,
+            316
+          ]
+        },
+        {
+          "file": "packed/level-standing.png",
+          "x": 1080,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            39,
+            113,
+            321,
+            316
+          ]
+        }
+      ],
+      "swim": [
+        [
+          {
+            "file": "packed/level-swimming.png",
+            "x": 0,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              66,
+              335,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 360,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              38,
+              77,
+              322,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 720,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              89,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1080,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              97,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1440,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              101,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1800,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              97,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2160,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              89,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2520,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              38,
+              77,
+              322,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/level-swimming.png",
+            "x": 0,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              29,
+              80,
+              330,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 360,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              39,
+              85,
+              320,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 720,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              94,
+              313,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1080,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              95,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1440,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              108,
+              309,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1800,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              95,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2160,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              94,
+              313,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2520,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              39,
+              85,
+              320,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/level-swimming.png",
+            "x": 0,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              27,
+              99,
+              332,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 360,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              38,
+              97,
+              322,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 720,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              106,
+              312,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1080,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              105,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1440,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              53,
+              107,
+              307,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1800,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              105,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2160,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              106,
+              312,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2520,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              38,
+              97,
+              322,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/level-swimming.png",
+            "x": 0,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              27,
+              70,
+              333,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 360,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              35,
+              77,
+              325,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 720,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              90,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1080,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              98,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1440,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              112,
+              309,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 1800,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              98,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2160,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              90,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-swimming.png",
+            "x": 2520,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              35,
+              77,
+              325,
+              316
+            ]
+          }
+        ]
+      ],
+      "fire": [
+        [
+          {
+            "file": "packed/level-firing.png",
+            "x": 0,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              142,
+              335,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 360,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              33,
+              131,
+              326,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 720,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              69,
+              120,
+              290,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1080,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              120,
+              309,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1440,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              38,
+              126,
+              321,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1800,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              120,
+              309,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2160,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              69,
+              120,
+              290,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2520,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              33,
+              131,
+              326,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/level-firing.png",
+            "x": 0,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              28,
+              130,
+              331,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 360,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              28,
+              123,
+              332,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 720,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              62,
+              123,
+              297,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1080,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              66,
+              111,
+              293,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1440,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              57,
+              130,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1800,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              66,
+              111,
+              293,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2160,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              62,
+              123,
+              297,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2520,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              28,
+              123,
+              332,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/level-firing.png",
+            "x": 0,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              27,
+              130,
+              332,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 360,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              32,
+              122,
+              328,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 720,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              119,
+              300,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1080,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              66,
+              114,
+              293,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1440,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              134,
+              313,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1800,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              66,
+              114,
+              293,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2160,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              119,
+              300,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2520,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              32,
+              122,
+              328,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/level-firing.png",
+            "x": 0,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              26,
+              137,
+              334,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 360,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              31,
+              128,
+              329,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 720,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              71,
+              122,
+              289,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1080,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              122,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1440,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              40,
+              120,
+              319,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 1800,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              122,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2160,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              71,
+              122,
+              289,
+              316
+            ]
+          },
+          {
+            "file": "packed/level-firing.png",
+            "x": 2520,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              31,
+              128,
+              329,
+              316
+            ]
+          }
+        ]
+      ]
+    },
+    "above": {
+      "idle": [
+        {
+          "file": "packed/above-standing.png",
+          "x": 0,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            25,
+            102,
+            335,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 360,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            32,
+            72,
+            327,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 720,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            69,
+            322,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 1080,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            41,
+            74,
+            319,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 0,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            34,
+            90,
+            325,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 360,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            44,
+            86,
+            316,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 720,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            37,
+            83,
+            323,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 1080,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            41,
+            88,
+            318,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 0,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            32,
+            107,
+            328,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 360,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            41,
+            88,
+            318,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 720,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            37,
+            83,
+            323,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 1080,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            44,
+            86,
+            316,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 0,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            34,
+            90,
+            325,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 360,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            41,
+            74,
+            319,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 720,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            69,
+            322,
+            316
+          ]
+        },
+        {
+          "file": "packed/above-standing.png",
+          "x": 1080,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            32,
+            72,
+            327,
+            316
+          ]
+        }
+      ],
+      "swim": [
+        [
+          {
+            "file": "packed/above-swimming.png",
+            "x": 0,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              91,
+              335,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 360,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              75,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 720,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              96,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1080,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              98,
+              315,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1440,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              36,
+              91,
+              324,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1800,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              98,
+              315,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2160,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              96,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2520,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              75,
+              308,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/above-swimming.png",
+            "x": 0,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              26,
+              96,
+              333,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 360,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              81,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 720,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              115,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1080,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              95,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1440,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              34,
+              80,
+              325,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1800,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              95,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2160,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              115,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2520,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              81,
+              303,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/above-swimming.png",
+            "x": 0,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              29,
+              57,
+              331,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 360,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              62,
+              63,
+              298,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 720,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              53,
+              52,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1080,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              72,
+              309,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1440,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              37,
+              86,
+              323,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1800,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              72,
+              309,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2160,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              53,
+              52,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2520,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              62,
+              63,
+              298,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/above-swimming.png",
+            "x": 0,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              30,
+              94,
+              329,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 360,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              52,
+              95,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 720,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              92,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1080,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              103,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1440,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              36,
+              88,
+              324,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 1800,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              103,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2160,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              92,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-swimming.png",
+            "x": 2520,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              52,
+              95,
+              308,
+              316
+            ]
+          }
+        ]
+      ],
+      "fire": [
+        [
+          {
+            "file": "packed/above-firing.png",
+            "x": 0,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              43,
+              120,
+              317,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 360,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              108,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 720,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              43,
+              108,
+              317,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1080,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              109,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1440,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              27,
+              112,
+              333,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1800,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              109,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2160,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              43,
+              108,
+              317,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2520,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              108,
+              306,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/above-firing.png",
+            "x": 0,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              125,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 360,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              61,
+              111,
+              299,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 720,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              113,
+              300,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1080,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              114,
+              304,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1440,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              113,
+              335,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1800,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              114,
+              304,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2160,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              113,
+              300,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2520,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              61,
+              111,
+              299,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/above-firing.png",
+            "x": 0,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              53,
+              131,
+              307,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 360,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              57,
+              117,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 720,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              102,
+              301,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1080,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              57,
+              103,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1440,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              28,
+              124,
+              332,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1800,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              57,
+              103,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2160,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              102,
+              301,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2520,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              57,
+              117,
+              303,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/above-firing.png",
+            "x": 0,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              132,
+              313,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 360,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              118,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 720,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              45,
+              120,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1080,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              120,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1440,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              27,
+              120,
+              333,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 1800,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              120,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2160,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              45,
+              120,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/above-firing.png",
+            "x": 2520,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              118,
+              305,
+              316
+            ]
+          }
+        ]
+      ]
+    },
+    "below": {
+      "idle": [
+        {
+          "file": "packed/below-standing.png",
+          "x": 0,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            30,
+            118,
+            329,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 360,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            35,
+            116,
+            325,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 720,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            115,
+            321,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 1080,
+          "y": 0,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            49,
+            119,
+            311,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 0,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            31,
+            115,
+            329,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 360,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            126,
+            321,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 720,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            121,
+            322,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 1080,
+          "y": 360,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            53,
+            116,
+            307,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 0,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            25,
+            111,
+            335,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 360,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            53,
+            116,
+            307,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 720,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            121,
+            322,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 1080,
+          "y": 720,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            126,
+            321,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 0,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            31,
+            115,
+            329,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 360,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            49,
+            119,
+            311,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 720,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            38,
+            115,
+            321,
+            316
+          ]
+        },
+        {
+          "file": "packed/below-standing.png",
+          "x": 1080,
+          "y": 1080,
+          "atlas": [
+            1440,
+            1440
+          ],
+          "bounds": [
+            35,
+            116,
+            325,
+            316
+          ]
+        }
+      ],
+      "swim": [
+        [
+          {
+            "file": "packed/below-swimming.png",
+            "x": 0,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              30,
+              103,
+              329,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 360,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              86,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 720,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              86,
+              315,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1080,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              43,
+              93,
+              316,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1440,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              28,
+              97,
+              332,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1800,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              43,
+              93,
+              316,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2160,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              86,
+              315,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2520,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              86,
+              305,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/below-swimming.png",
+            "x": 0,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              39,
+              95,
+              321,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 360,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              79,
+              310,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 720,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              39,
+              77,
+              321,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1080,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              67,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1440,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              100,
+              335,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1800,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              49,
+              67,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2160,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              39,
+              77,
+              321,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2520,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              50,
+              79,
+              310,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/below-swimming.png",
+            "x": 0,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              30,
+              117,
+              330,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 360,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              53,
+              90,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 720,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              84,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1080,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              47,
+              82,
+              313,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1440,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              115,
+              334,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1800,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              47,
+              82,
+              313,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2160,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              48,
+              84,
+              311,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2520,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              53,
+              90,
+              306,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/below-swimming.png",
+            "x": 0,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              31,
+              101,
+              329,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 360,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              77,
+              308,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 720,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              89,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1080,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              90,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1440,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              33,
+              104,
+              326,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 1800,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              90,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2160,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              89,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-swimming.png",
+            "x": 2520,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              51,
+              77,
+              308,
+              316
+            ]
+          }
+        ]
+      ],
+      "fire": [
+        [
+          {
+            "file": "packed/below-firing.png",
+            "x": 0,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              129,
+              334,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 360,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              45,
+              125,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 720,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              121,
+              301,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1080,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              115,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1440,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              42,
+              117,
+              317,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1800,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              115,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2160,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              59,
+              121,
+              301,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2520,
+            "y": 0,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              45,
+              125,
+              314,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/below-firing.png",
+            "x": 0,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              105,
+              334,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 360,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              42,
+              103,
+              317,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 720,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              125,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1080,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              52,
+              109,
+              307,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1440,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              46,
+              117,
+              314,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1800,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              52,
+              109,
+              307,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2160,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              125,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2520,
+            "y": 360,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              42,
+              103,
+              317,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/below-firing.png",
+            "x": 0,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              112,
+              335,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 360,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              116,
+              316,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 720,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              122,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1080,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              113,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1440,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              43,
+              124,
+              316,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1800,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              113,
+              306,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2160,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              54,
+              122,
+              305,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2520,
+            "y": 720,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              116,
+              316,
+              316
+            ]
+          }
+        ],
+        [
+          {
+            "file": "packed/below-firing.png",
+            "x": 0,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              25,
+              130,
+              334,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 360,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              124,
+              315,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 720,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              120,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1080,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              116,
+              304,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1440,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              42,
+              118,
+              318,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 1800,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              55,
+              116,
+              304,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2160,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              56,
+              120,
+              303,
+              316
+            ]
+          },
+          {
+            "file": "packed/below-firing.png",
+            "x": 2520,
+            "y": 1080,
+            "atlas": [
+              2880,
+              1440
+            ],
+            "bounds": [
+              44,
+              124,
+              315,
+              316
+            ]
+          }
+        ]
+      ]
+    }
+  }
+}

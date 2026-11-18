@@ -1,0 +1,59 @@
+# Dependencies and generated output
+node_modules/
+dist/
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Runtime/cache artifacts
+__pycache__/
+*.py[cod]
+.cache/
+.vite/
+
+# Local design/source exports and backups
+*.xcf
+*.backup-*
+*.bak
+*.tmp
+# Keep large/private raw assets out of version control.
+assets/*
+!assets/ui/
+!assets/ui/hand.png
+!assets/ui/mushroom.png
+*.glb
+
+# Desktop builds
+release/
+dist-desktop/
+
+# Starting robot runtime assets
+!assets/robot/
+!assets/robot/cutout-sheet.png
+!assets/robot/manifest.json
+assets/robot/reference-sheet.png
+
+# Local dependency symlinks and OS metadata
+node_modules
+.DS_Store
+
+# Painted water monster runtime sprites
+!assets/water-monster-sprites/
+!assets/water-monster-sprites/**
+
+# Local hosting metadata and private configuration
+.openai/
+.env
+.env.*
+!.env.example
+**/.DS_Store
+
+# Assets required by this standalone game
+!assets/ui/**
+!assets/monster/
+!assets/monster/MuffinMan-torso-linked.glb
+!assets/draco/
+!assets/draco/**

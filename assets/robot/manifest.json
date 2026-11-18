@@ -1,0 +1,129 @@
+{
+  "character": "White-and-cyan tracked robot",
+  "source": "User-provided directional sheet; background extracted with imagegen",
+  "missingViews": "Absent opposite angles use mirrored existing views; no below views.",
+  "sets": {
+    "level": {
+      "file": "cutout-sheet.png",
+      "width": 1536,
+      "height": 1024,
+      "frames": [
+        {
+          "x": 55,
+          "y": 9,
+          "width": 197,
+          "height": 291
+        },
+        {
+          "x": 350,
+          "y": 10,
+          "width": 229,
+          "height": 304
+        },
+        {
+          "x": 649,
+          "y": 10,
+          "width": 232,
+          "height": 303
+        },
+        {
+          "x": 957,
+          "y": 10,
+          "width": 228,
+          "height": 306
+        },
+        {
+          "x": 1284,
+          "y": 10,
+          "width": 216,
+          "height": 293
+        },
+        {
+          "x": 31,
+          "y": 345,
+          "width": 236,
+          "height": 303
+        },
+        {
+          "x": 348,
+          "y": 352,
+          "width": 234,
+          "height": 295
+        },
+        {
+          "x": 666,
+          "y": 351,
+          "width": 227,
+          "height": 295
+        },
+        {
+          "x": 998,
+          "y": 354,
+          "width": 182,
+          "height": 295
+        },
+        {
+          "x": 1274,
+          "y": 348,
+          "width": 237,
+          "height": 301
+        }
+      ]
+    },
+    "overhead": {
+      "file": "cutout-sheet.png",
+      "width": 1536,
+      "height": 1024,
+      "frames": [
+        {
+          "x": 23,
+          "y": 720,
+          "width": 153,
+          "height": 212
+        },
+        {
+          "x": 219,
+          "y": 718,
+          "width": 157,
+          "height": 214
+        },
+        {
+          "x": 400,
+          "y": 718,
+          "width": 158,
+          "height": 215
+        },
+        {
+          "x": 590,
+          "y": 719,
+          "width": 168,
+          "height": 215
+        },
+        {
+          "x": 801,
+          "y": 723,
+          "width": 132,
+          "height": 210
+        },
+        {
+          "x": 975,
+          "y": 721,
+          "width": 174,
+          "height": 214
+        },
+        {
+          "x": 1168,
+          "y": 719,
+          "width": 176,
+          "height": 213
+        },
+        {
+          "x": 1366,
+          "y": 720,
+          "width": 161,
+          "height": 212
+        }
+      ]
+    }
+  }
+}
